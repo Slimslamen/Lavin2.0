@@ -5,6 +5,7 @@ import { IoMdMail } from 'react-icons/io';
 import { SlSocialLinkedin } from 'react-icons/sl';
 import { TfiFacebook } from 'react-icons/tfi';
 import Link from "next/link"
+import Image from 'next/image';
 
 
 const Footer = () => {
@@ -57,7 +58,7 @@ const Footer = () => {
             </div>
             
             <div className="text-center flex flex-row items-center justify-center md:ml-[-10px]">
-              <img src="/Images/Elsäkerhetsverket.png" loading='lazy' alt="Elsäkerhetsverket logotyp" className='w-10 h-10' />
+              <Image width={100} height={100} src="/Images/Elsäkerhetsverket.png" loading='lazy' alt="Elsäkerhetsverket logotyp" className='w-10 h-10' />
               <div className="bg-orange-500 text-white py-1 rounded-full text-sm font-semibold inline-block">
                 Godkända av: ELSÄKERHETSVERKET
               </div>
@@ -70,7 +71,7 @@ const Footer = () => {
             ©2026 Lavin Elektriska AB.
           </p>
           <div className="mt-4 md:mt-0">
-            <Link href="/policyPage" className="text-gray-400 hover:text-[#66BEF0] transition-colors" aria-label="Sekretesspolicy">
+            <Link href="/policy" className="text-gray-400 hover:text-[#66BEF0] transition-colors" aria-label="Sekretesspolicy">
               Sekretesspolicy
             </Link>
           </div>

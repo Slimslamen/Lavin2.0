@@ -67,7 +67,7 @@ export default function Shop() {
   return (
     <div>
       <SecondHeader />
-      <div className="static h-[130rem]  md:h-[60rem] pb-20 bg-gradient-to-br from-gray-50 to-blue-50">
+      <div className="static h-[130rem]  md:h-[60rem] pb-20 bg-lineaer-to-br from-gray-50 to-blue-50">
         <div className="Moviebg relative min-h-[20rem] md:min-h-[35rem] mb-12 overflow-hidden">
           <video
             className="absolute inset-0 w-full h-full object-cover z-0"

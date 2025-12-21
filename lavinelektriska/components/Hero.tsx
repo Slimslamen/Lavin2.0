@@ -1,6 +1,7 @@
 'use client'
 
 import { Phone, CheckCircle, ArrowRight, ListChecks } from "lucide-react";
+import Image from "next/image";
 // import { MoneySend, TruckFast } from "iconsax-astro";
 
 const Hero = () => {
@@ -14,17 +15,17 @@ const Hero = () => {
           {/* Desktop / larger screens */}
           <source media="(min-width: 641px)" type="image/webp" srcSet="/Images/HeroImg.webp" />
           {/* Fallback img element */}
-          <img
+          <Image
+            fill
+            preload={true}
             src="/Images/plejdHero.webp"
             alt="Bakgrundsbild elinstallation"
-            className="w-full h-full object-cover object-center"
-            decoding="async"
-            fetchPriority="high"
+            className="object-cover object-center"
             style={{ position: "absolute", inset: 0, zIndex: 0 }}
           />
         </picture>
-        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/30" aria-hidden="true" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#66BEF0]/20 to-transparent" aria-hidden="true" />
+        <div className="absolute inset-0 bg-linear-to-br from-black/70 via-black/50 to-black/30" aria-hidden="true" />
+        <div className="absolute inset-0 bg-linear-to-t from-[#66BEF0]/20 to-transparent" aria-hidden="true" />
       </div>
 
       {/* Content */}
@@ -32,7 +33,7 @@ const Hero = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
           <div className="animate-fade-in text-white">
             <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-white to-blue-200 bg-clip-text text-transparent">
                 Lavin Elektriska AB
               </span>
               <br />

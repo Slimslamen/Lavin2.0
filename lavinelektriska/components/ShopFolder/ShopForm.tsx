@@ -1,19 +1,22 @@
 import { useState } from "react";
 import { useForm } from "@formspree/react";
+import { ShopFormProps } from "./shopInterface";
 
-export default function ShopForm({ bundle, selectedIds, total, onSuccess }) {
+
+
+export default function ShopForm({ bundle, selectedIds, total, onSuccess }: ShopFormProps) {
   const [state, handleSubmit] = useForm("xrbkjgpz");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [touched, setTouched] = useState({ name: false, phone: false, email: false });
 
-  const isValidEmail = (v) => /.+@.+\..+/.test(v.trim());
-  const isValidPhone = (v) => {
+  const isValidEmail = (v: string) => /.+@.+\..+/.test(v.trim());
+  const isValidPhone = (v: string) => {
     const digits = v.replace(/\D/g, "");
     return digits.length >= 7;
   };
-  const isValidName = (v) => v.trim().length > 0;
+  const isValidName = (v: string) => v.trim().length > 0;
   const formValid = isValidName(name) && isValidPhone(phone) && isValidEmail(email);
 
   const itemNames = selectedIds

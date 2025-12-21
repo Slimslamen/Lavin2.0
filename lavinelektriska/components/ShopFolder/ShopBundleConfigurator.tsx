@@ -1,36 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { X, Check } from "lucide-react";
 import ShopForm from "./ShopForm";
-
-type BundleItem = {
-  id: string;
-  name: string;
-  price: number;
-};
-
-type BundleConfig = {
-  name: string;
-  basePrice: number;
-  maxItems: number;
-  items: BundleItem[];
-};
-
-type RequestQuotePayload = {
-  name: string;
-  phone: string;
-  email: string;
-  selected: string[];
-  total: number;
-  bundle: string;
-};
+import { RequestQuotePayload, ShopBundleConfiguratorProps } from "./shopInterface";
 
 type ShopFormSuccessData = Omit<RequestQuotePayload, "bundle">;
-
-interface ShopBundleConfiguratorProps {
-  bundle: BundleConfig;
-  onClose: () => void;
-  onRequestQuote?: (payload: RequestQuotePayload) => void;
-}
 
 export default function ShopBundleConfigurator({ bundle, onClose, onRequestQuote }: ShopBundleConfiguratorProps) {
   const [selected, setSelected] = useState<Set<string>>(() => new Set<string>());

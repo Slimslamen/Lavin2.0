@@ -26,7 +26,7 @@ export default function ShopCards({ bundle, onSelect }: ShopCardsProps) {
      <div className={`${bundle.name === "Standardpaket" ? "outline-[#66BEF0] outline-1" : ""} bg-white p-10 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col 2xl:h-[30rem] h-[30rem]`}>
       <div className="flex items-center gap-3 mb-4">
         <span className="w-12 h-12 rounded-xl bg-[#66bdf06f] flex items-center justify-center">
-          <Icon className="w-6 h-6 text-[#66BEF0]" aria-hidden="true" />
+          <Icon className="w-6 h-6 text-[#66BEF0]" aria-hidden={true} />
         </span>
         <h2 className="text-2xl font-semibold text-gray-900">{bundle.name}</h2>
       </div>

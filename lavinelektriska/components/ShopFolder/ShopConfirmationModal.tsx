@@ -1,15 +1,12 @@
 import { useEffect, useRef } from "react";
 import { X, CheckCircle } from "lucide-react";
-
 import { useRouter } from "next/navigation";
+import { ShopConfirmationModalProps } from "./shopInterface";
 const useNavigate = () => {
   const router = useRouter();
   return (href: string) => router.push(href);
 };
 
-type ShopConfirmationModalProps = {
-  onClose?: () => void;
-};
 
 export default function ShopConfirmationModal({ onClose }: ShopConfirmationModalProps) {
   const closeBtnRef = useRef<HTMLButtonElement>(null);

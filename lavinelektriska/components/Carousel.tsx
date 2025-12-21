@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import Image from "next/image";
 
 const Carousel = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -82,7 +83,7 @@ const Carousel = () => {
             className="absolute left-0 top-1/2 -translate-y-1/2 md:-translate-x-2 -translate-x-8 z-10 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg transition-all duration-200 hover:scale-95 w-10 md:h-10 h-96"
             aria-label="Previous images"
           >
-            <ChevronLeft className="md:w-6 md:h-6 w-10 h-10 absolute left-0.5 md:left-1 top-44 md:top-1/5 text-white" />
+            <ChevronLeft className="md:w-6 md:h-6 w-10 h-10 absolute left-0.5 md:left-1 top-44 md:top-[20%] text-white" />
           </button>
 
           <button
@@ -90,7 +91,7 @@ const Carousel = () => {
             className="absolute right-0 top-1/2 -translate-y-1/2 md:-translate-x-2 translate-x-8 z-10 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all duration-200 hover:scale-95 w-10 md:h-10 h-96"
             aria-label="Next images"
           >
-            <ChevronRight className="md:w-6 md:h-6 w-10 h-10 absolute right-0.5 md:right-1 top-44 md:top-1/5 text-white" />
+            <ChevronRight className="md:w-6 md:h-6 w-10 h-10 absolute right-0.5 md:right-1 top-44 md:top-[20%] text-white" />
           </button>
 
           {/* Gallery Grid */}
@@ -109,10 +110,12 @@ const Carousel = () => {
                   className={`col-span-1 row-span-1 ${colClass} ${rowClass} relative overflow-hidden rounded-lg shadow-xl group cursor-pointer`}
                   onClick={() => setSelectedImage(image)}
                 >
-                  <img
-                    src={image.url}
-                    alt={`Gallery image ${index + 1}`}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  <Image
+                  src={image.url}
+                  alt={`Gallery image ${index + 1}`}
+                  fill
+                  loading="lazy"
+                  className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
                 </div>
@@ -136,11 +139,10 @@ const Carousel = () => {
           ))}
         </div>
       </div>
-
-      {/* Lightbox Modal */}
+      
       {selectedImage && (
         <div
-          className="md:fixed hidden inset-0 bg-black/85 z-[1000] md:h-[90vh] 2xl:h-[60vh] md:flex items-center justify-center p-4 rounded-lg"
+          className="md:fixed hidden inset-0 bg-black/85 z-1000 md:h-[90vh] 2xl:h-[60vh] md:flex items-center justify-center p-4 rounded-lg"
           onClick={() => setSelectedImage(null)}
           role="dialog"
           aria-modal="true"
@@ -154,10 +156,11 @@ const Carousel = () => {
             <X className="w-6 h-6 absolute text-white" />
           </button>
 
-          <img
+          <Image
+            fill
             src={selectedImage.url}
             alt="Förstorad bild"
-            className="max-w-[95vw] max-h-[80vh] 2xl:max-h-[50vh] object-contain rounded-lg shadow-2xl"
+            className=" max-h-[80vh] 2xl:max-h-[50vh] object-contain rounded-lg shadow-2xl mt-10"
             onClick={(e) => e.stopPropagation()}
           />
         </div>

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Phone, CheckCircle, ArrowRight, ListChecks } from "lucide-react";
 import Image from "next/image";
@@ -70,15 +70,36 @@ const Hero = () => {
             </div>
             <div className="smallerbox grid grid-cols-1 sm:grid-cols-3 gap-4 smallerBox" aria-label="Företagsfördelar">
               <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-lg">
-                <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" aria-hidden="true" />
+                <Image
+                  src="/svg/checkCircle.svg"
+                  alt="check circle icon"
+                  width={24}
+                  height={24}
+                  loading="eager"
+                  className="w-6 h-6"
+                />
                 <span className="text-sm font-medium">Elinstallationer</span>
               </div>
               <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-lg">
-                <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" aria-hidden="true" />
+                <Image
+                  src="/svg/checkCircle.svg"
+                  alt="check circle icon"
+                  width={24}
+                  height={24}
+                  loading="eager"
+                  className="w-6 h-6"
+                />
                 <span className="text-sm font-medium">Renoveringar</span>
               </div>
               <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-lg">
-                <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" aria-hidden="true" />
+                <Image
+                  src="/svg/checkCircle.svg"
+                  alt="check circle icon"
+                  width={24}
+                  height={24}
+                  loading="eager"
+                  className="w-6 h-6"
+                />
                 <span className="text-sm font-medium">Nyproduktioner</span>
               </div>
             </div>
@@ -93,10 +114,12 @@ const Hero = () => {
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-[#66BEF0] rounded-lg flex items-center justify-center">
                     {/* <TruckFast size={27} color="#ffff" /> */}
-                      <img
+                    <Image
                       src="/svg/truck-speed-svgrepo-com.svg"
                       alt="truck speed icon"
-                      className="w-8 h-8"
+                      width={32}
+                      height={32}
+                      className="w-10 h-10"
                       loading="eager"
                     />
                   </div>
@@ -107,10 +130,12 @@ const Hero = () => {
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-[#66BEF0] rounded-lg flex items-center justify-center">
-                    <img
+                    <Image
                       src="/svg/money-send-svgrepo-com.svg"
                       alt="Money send icon"
-                      className="w-8 h-8"
+                      width={32}
+                      height={32}
+                      className="w-10 h-10"
                       loading="eager"
                     />
                   </div>
@@ -121,10 +146,12 @@ const Hero = () => {
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-[#66BEF0] rounded-lg flex items-center justify-center">
-                    <img
+                    <Image
                       src="/svg/list-checks-svgrepo-com.svg"
                       alt="list checks icon"
-                      className="w-8 h-8"
+                      width={32}
+                      height={32}
+                      className="w-10 h-10"
                       loading="eager"
                     />
                   </div>

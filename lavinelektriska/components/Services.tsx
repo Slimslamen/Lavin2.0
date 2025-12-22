@@ -91,7 +91,7 @@ const Services = () => {
               role={isMobile ? "button" : undefined}
               tabIndex={isMobile ? 0 : -1}
               aria-disabled={!isMobile}
-              className={`group relative h-96 md:w-[65vh] 2xl:w-[50vh] rounded-2xl overflow-hidden cursor-pointer md:cursor-default shadow-lg transition-all duration-500 ease-out
+              className={`group relative h-96 md:w-[65vh] 2xl:w-[45vh] rounded-2xl overflow-hidden cursor-pointer md:cursor-default shadow-lg transition-all duration-500 ease-out
                 ${isMobile && expandedCard === service.id ? "h-[640px] z-50 md:h-96" : ""}
                 md:hover:w-[120%] md:hover:z-50
                   `}

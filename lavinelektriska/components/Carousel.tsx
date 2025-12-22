@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -83,7 +83,14 @@ const Carousel = () => {
             className="absolute left-0 top-1/2 -translate-y-1/2 md:-translate-x-2 -translate-x-8 z-10 bg-white/90 hover:bg-white p-3 rounded-full shadow-lg transition-all duration-200 hover:scale-95 w-10 md:h-10 h-96"
             aria-label="Previous images"
           >
-            <ChevronLeft className="md:w-6 md:h-6 w-10 h-10 absolute left-0.5 md:left-1 top-44 md:top-[20%] text-white" />
+            <Image
+              src="/svg/left-chevron-svgrepo-com.svg"
+              alt="check circle icon"
+              width={24}
+              height={24}
+              loading="lazy"
+              className="w-6 h-6 absolute top-2 left-2"
+            />
           </button>
 
           <button
@@ -91,7 +98,14 @@ const Carousel = () => {
             className="absolute right-0 top-1/2 -translate-y-1/2 md:-translate-x-2 translate-x-8 z-10 bg-white/90 hover:bg-white rounded-full shadow-lg transition-all duration-200 hover:scale-95 w-10 md:h-10 h-96"
             aria-label="Next images"
           >
-            <ChevronRight className="md:w-6 md:h-6 w-10 h-10 absolute right-0.5 md:right-1 top-44 md:top-[20%] text-white" />
+            <Image
+              src="/svg/right-chevron-svgrepo-com.svg"
+              alt="check circle icon"
+              width={24}
+              height={24}
+              loading="lazy"
+              className="w-6 h-6 absolute top-2 right-2"
+            />
           </button>
 
           {/* Gallery Grid */}
@@ -111,11 +125,11 @@ const Carousel = () => {
                   onClick={() => setSelectedImage(image)}
                 >
                   <Image
-                  src={image.url}
-                  alt={`Gallery image ${index + 1}`}
-                  fill
-                  loading="lazy"
-                  className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
+                    src={image.url}
+                    alt={`Gallery image ${index + 1}`}
+                    fill
+                    loading="lazy"
+                    className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
                 </div>
@@ -139,7 +153,7 @@ const Carousel = () => {
           ))}
         </div>
       </div>
-      
+
       {selectedImage && (
         <div
           className="md:fixed hidden inset-0 bg-black/85 z-1000 md:h-[90vh] 2xl:h-[60vh] md:flex items-center justify-center p-4 rounded-lg"

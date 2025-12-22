@@ -1,6 +1,7 @@
-'use client'
+"use client";
 
-import { Star, Quote } from 'lucide-react';
+import { Star, Quote } from "lucide-react";
+import Image from "next/image";
 
 const Testimonials = () => {
   const testimonials = [
@@ -21,7 +22,7 @@ const Testimonials = () => {
       location: "Åkered",
       rating: 5,
       text: "Lavin Elektriska hjälpte oss med elinstallationerna i vårt hus. Arbetet utfördes professionellt och enligt tidplan. Vi ger dem toppbetyg!",
-    }
+    },
   ];
 
   return (
@@ -36,25 +37,41 @@ const Testimonials = () => {
 
         <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+            <div
+              key={index}
+              className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+            >
               <div className="flex items-center mb-6">
                 <div>
                   <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
                   <p className="text-gray-600 text-sm">{testimonial.location}</p>
                 </div>
               </div>
-              
+
               <div className="flex mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                  <Image
+                    key={i}
+                    src="/svg/star-svgrepo-com.svg"
+                    alt="check circle icon"
+                    width={24}
+                    height={24}
+                    loading="lazy"
+                    className="w-6 h-6"
+                  />
                 ))}
               </div>
-              
+
               <div className="relative">
-                <Quote className="w-8 h-8 text-[#66BEF0] opacity-20 absolute -top-2 -left-2" />
-                <p className="text-gray-700 leading-relaxed pl-6">
-                  {testimonial.text}
-                </p>
+               <Image
+                    src="/svg/quote-svgrepo-com.svg"
+                    alt="check circle icon"
+                    width={24}
+                    height={24}
+                    loading="lazy"
+                    className="w-8 h-8"
+                  />
+                <p className="text-gray-700 leading-relaxed pl-6">{testimonial.text}</p>
               </div>
             </div>
           ))}

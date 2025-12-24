@@ -85,7 +85,7 @@ const Carousel = () => {
           >
             <Image
               src="/svg/left-chevron-svgrepo-com.svg"
-              alt="check circle icon"
+              alt="left icon"
               width={24}
               height={24}
               loading="lazy"
@@ -100,7 +100,7 @@ const Carousel = () => {
           >
             <Image
               src="/svg/right-chevron-svgrepo-com.svg"
-              alt="check circle icon"
+              alt="right icon"
               width={24}
               height={24}
               loading="lazy"

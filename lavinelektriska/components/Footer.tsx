@@ -36,7 +36,7 @@ const Footer = () => {
               <div className="flex items-center gap-3">
                 <Image
                   src="/svg/phone-svgrepo-com.svg"
-                  alt="check circle icon"
+                  alt="phone icon"
                   width={24}
                   height={24}
                   loading="lazy"
@@ -47,7 +47,7 @@ const Footer = () => {
               <div className="flex items-center gap-3">
                  <Image
                   src="/svg/mail-svgrepo-com.svg"
-                  alt="check circle icon"
+                  alt="mail icon"
                   width={24}
                   height={24}
                   loading="lazy"
@@ -70,7 +70,7 @@ const Footer = () => {
               >
                <Image
                   src="/svg/instagram-svgrepo-com.svg"
-                  alt="check circle icon"
+                  alt="instagram icon"
                   width={24}
                   height={24}
                   loading="lazy"
@@ -86,7 +86,7 @@ const Footer = () => {
               >
                <Image
                   src="/svg/facebook-176-svgrepo-com.svg"
-                  alt="check circle icon"
+                  alt="facebook icon"
                   width={24}
                   height={24}
                   loading="lazy"
@@ -102,7 +102,7 @@ const Footer = () => {
               >
                 <Image
                   src="/svg/linkedin-svgrepo-com.svg"
-                  alt="check circle icon"
+                  alt="linkedin icon"
                   width={24}
                   height={24}
                   loading="lazy"
@@ -113,8 +113,8 @@ const Footer = () => {
 
             <div className="text-center flex flex-row items-center justify-center md:ml-[-10px]">
               <Image
-                width={100}
-                height={100}
+                width={24}
+                height={24}
                 src="/Images/Elsäkerhetsverket.png"
                 loading="lazy"
                 alt="Elsäkerhetsverket logotyp"

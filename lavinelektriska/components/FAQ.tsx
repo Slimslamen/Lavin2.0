@@ -1,23 +1,24 @@
-'use client'
+"use client";
 
 import { Plus, Minus } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  
+
   const faqs = [
     {
       question: "Hur lång tid tar en typisk elinstallation?",
       answer1:
-      "Tiden beror på uppdragets omfattning. Ett enklare jobb, som att installera ett eluttag eller byta en strömbrytare, tar oftast 1–2 timmar.",
+        "Tiden beror på uppdragets omfattning. Ett enklare jobb, som att installera ett eluttag eller byta en strömbrytare, tar oftast 1–2 timmar.",
       answer2:
-      "Större projekt som en komplett eldragning i en villa eller lokal kan ta allt från ett par dagar till flera veckor, beroende på storlek, tillgänglighet och kundens önskemål. Vi ger alltid en tydlig tidsuppskattning innan vi sätter igång, så du vet vad du kan förvänta dig.",
+        "Större projekt som en komplett eldragning i en villa eller lokal kan ta allt från ett par dagar till flera veckor, beroende på storlek, tillgänglighet och kundens önskemål. Vi ger alltid en tydlig tidsuppskattning innan vi sätter igång, så du vet vad du kan förvänta dig.",
     },
     {
       question: "Hur mycket kostar en elektriker per timme?",
       answer1:
-      "Timpriset för en elektriker efter ROT-avdrag ligger vanligtvis på 500–700 kr per timme. Priset kan variera något beroende på arbetets omfattning, region och typ av uppdrag. För akuta jobb eller jourarbeten kan timpriset vara högre.",
+        "Timpriset för en elektriker efter ROT-avdrag ligger vanligtvis på 500–700 kr per timme. Priset kan variera något beroende på arbetets omfattning, region och typ av uppdrag. För akuta jobb eller jourarbeten kan timpriset vara högre.",
       answer2: "Du får alltid tydliga priser innan arbetet startar, så du vet exakt vad du betalar för.",
     },
     {
@@ -49,7 +50,7 @@ const FAQ = () => {
     {
       question: "Ger ni garanti på ert arbete?",
       answer1:
-      "Ja, vi ger full garanti på allt vårt arbete och använder endast kvalitetsmaterial från välkända tillverkare. Garantitiden varierar beroende på typ av installation.",
+        "Ja, vi ger full garanti på allt vårt arbete och använder endast kvalitetsmaterial från välkända tillverkare. Garantitiden varierar beroende på typ av installation.",
       answer2: "",
     },
     {
@@ -62,7 +63,7 @@ const FAQ = () => {
     {
       question: "Kan ni hjälpa till med elbesiktning?",
       answer1:
-      "Ja, vi utför professionella elbesiktningar för både bostäder och kommersiella fastigheter. Vi hjälper er att identifiera potentiella problem och säkerställa att er installation möter alla säkerhetskrav.",
+        "Ja, vi utför professionella elbesiktningar för både bostäder och kommersiella fastigheter. Vi hjälper er att identifiera potentiella problem och säkerställa att er installation möter alla säkerhetskrav.",
       answer2: "",
     },
     {
@@ -92,7 +93,7 @@ const FAQ = () => {
         </div>
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-5" role="list">
           {faqs.map((faq, index) => (
-            <div key={index} className="mb-4" role="listitem">
+            <div key={index} className="mb-4 relative" role="listitem">
               <button
                 onClick={() => toggleFAQ(index)}
                 className="w-full p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow text-left flex items-center justify-between group"
@@ -106,9 +107,23 @@ const FAQ = () => {
                   aria-hidden="true"
                 >
                   {openIndex === index ? (
-                    <Minus className="w-5 h-5 text-white" aria-hidden="true" />
+                    <Image
+                      src="/svg/minus-svgrepo-com.svg"
+                      alt="miuus icon"
+                      width={24}
+                      height={24}
+                      loading="lazy"
+                      className="w-8 h-8 absolute top-3 right-5"
+                    />
                   ) : (
-                    <Plus className="w-5 h-5 text-white" aria-hidden="true" />
+                    <Image
+                      src="/svg/plus-svgrepo-com.svg"
+                      alt="plus icon"
+                      width={24}
+                      height={24}
+                      loading="lazy"
+                      className="w-8 h-8 absolute top-3 right-5"
+                    />
                   )}
                 </div>
               </button>

@@ -42,7 +42,7 @@ const CTA = () => {
             >
               <Image
                 src="/svg/message-square-svgrepo-com.svg"
-                alt="check circle icon"
+                alt="message icon"
                 width={24}
                 height={24}
                 loading="lazy"
@@ -68,7 +68,7 @@ const CTA = () => {
             >
               <Image
                 src="/svg/phone-svgrepo-com.svg"
-                alt="check circle icon"
+                alt="phone icon"
                 width={24}
                 height={24}
                 loading="lazy"

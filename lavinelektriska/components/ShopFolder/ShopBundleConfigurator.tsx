@@ -123,22 +123,22 @@ export default function ShopBundleConfigurator({ bundle, onClose, onRequestQuote
         );
       }
 
-      if (step === 1) {
-        return (
-          <Itemsummary
-            bundle={bundle}
-            cartIsEmpty={cartIsEmpty}
-            selectedEntries={selectedEntries}
-            decrementItem={decrementItem}
-            incrementItem={incrementItem}
-            reachedLimit={reachedLimit}
-            total={total}
-            clearCart={clearCart}
-            max={max}
-            remaining={remaining}
-          />
-        );
-      }
+      // if (step === 1) {
+      //   return (
+      //     <Itemsummary
+      //       bundle={bundle}
+      //       cartIsEmpty={cartIsEmpty}
+      //       selectedEntries={selectedEntries}
+      //       decrementItem={decrementItem}
+      //       incrementItem={incrementItem}
+      //       reachedLimit={reachedLimit}
+      //       total={total}
+      //       clearCart={clearCart}
+      //       max={max}
+      //       remaining={remaining}
+      //     />
+      //   );
+      // }
 
       return (
         <div className="grid gap-5 lg:grid-cols-2">
@@ -199,7 +199,7 @@ export default function ShopBundleConfigurator({ bundle, onClose, onRequestQuote
           <header className=" flex flex-wrap items-center rounded-tl-lg rounded-tr-lg justify-between px-6 pt-4 pb-8">
             <div>
               <h3 className="text-xl font-semibold text-gray-900">{bundle.name}</h3>
-              <p className="text-sm text-gray-600">Steg {step + 1} av 3 · {stepLabels[step]}</p>
+              <p className="text-sm text-gray-600">Steg {step + 1} av 2 · {stepLabels[step]}</p>
             </div>
             <button
               ref={closeBtnRef}
@@ -219,15 +219,15 @@ export default function ShopBundleConfigurator({ bundle, onClose, onRequestQuote
             <button
               type="button"
               onClick={step === 0 ? onClose : goPrev}
-              className="inline-flex items-center justify-center rounded-lg border border-gray-300 px-4 py-2 text-sm text-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#66BEF0]"
+              className="inline-flex items-center justify-center rounded-lg border border-gray-300 px-4 py-2 text-sm text-white hover:bg-gray-100"
             >
               {step === 0 ? "Avbryt" : "Tillbaka"}
             </button>
-            {step < 2 && (
+            {step < 1 && (
               <button
                 type="button"
                 onClick={goNext}
-                className="inline-flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                className="inline-flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-gray-800"
               >
                 Nästa
               </button>

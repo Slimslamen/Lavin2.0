@@ -1,5 +1,3 @@
-import type { ComponentType } from 'react';
-
 export interface ShopBundleConfiguratorProps {
   bundle: BundleConfig;
   onClose: () => void;

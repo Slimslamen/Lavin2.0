@@ -29,12 +29,12 @@ export default function Itemselection({
   decrementItem,
 }: ItemSelectionProps) {
   return (
-    <div className="space-y-5 w-[8rem] w-auto h-[25rem] sm:h-[50rem] overflow-auto">
+    <div className="space-y-5 w-[8rem] sm:w-auto h-[25rem] sm:h-[25rem] 2xl:h-[50rem] overflow-auto">
       <div className="flex items-center justify-between text-sm text-gray-600">
         <span>Välj upp till {max > 0 ? max : "valfritt antal"} produkter.</span>
-        {max > 0 && <span>{remaining === 0 ? "Fullt" : `${remaining} val kvar`}</span>}
+        {max > 0 && <span>{remaining === 0 ? "Fullt. Vid önskemål om fler produkter, kontakta oss via mail." : `${remaining} val kvar`}</span>}
       </div>
-      <div className="grid grid-cols-1 sm:w-auto sm:grid-cols-2 gap-2 content-center place-items-start sm:place-items-startcol-end-1">
+      <div className="grid grid-cols-1 sm:w-auto sm:grid-cols-2 gap-5 content-center place-items-start sm:place-items-center col-end-1">
         {bundle.items.map((item) => {
           const qty = cart[item.id] ?? 0;
           const disableIncrement = reachedLimit && qty === 0;
@@ -67,13 +67,13 @@ export default function Itemselection({
                   : ""
               }`}
             >
-              <div className="relative aspect-square overflow-hidden rounded-t-xl bg-white">
+              <div className="relative aspect-square overflow-hidden rounded-t-xl bg-white p-3 flex items-center justify-center">
                 <Image
                   src={imageSrc}
                   alt={item.name}
                   fill
-                  sizes="(max-width: 640px) 45vw, 12rem"
-                  className="object-cover"
+                  sizes="(max-width: 640px) 30vw, 6rem"
+                  className="object-contain"
                 />
               </div>
               <div className="flex flex-1 flex-col items-stretch gap-2 p-3 text-center">
@@ -89,7 +89,7 @@ export default function Itemselection({
                       decrementItem(item.id);
                     }}
                     disabled={qty === 0}
-                    className={`inline-flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-700 transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#66BEF0] ${
+                    className={`inline-flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-white transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#66BEF0] ${
                       qty === 0 ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                     aria-label={`Minska antal av ${item.name}`}
@@ -104,7 +104,7 @@ export default function Itemselection({
                       incrementItem(item.id);
                     }}
                     disabled={disableIncrement}
-                    className={`inline-flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-700 transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#66BEF0] ${
+                    className={`inline-flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-white transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#66BEF0] ${
                       disableIncrement ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                     aria-label={`Öka antal av ${item.name}`}

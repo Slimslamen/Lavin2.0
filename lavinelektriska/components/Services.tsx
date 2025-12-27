@@ -1,7 +1,8 @@
-'use client'
+"use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
 
 interface Service {
   id: number;
@@ -13,6 +14,20 @@ interface Service {
 const Services = () => {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [profiles, setProfiles] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      const { data: tests, error } = await supabase.from("Testing").select("*");
+      if (error) {
+        console.error(error);
+        return;
+      }
+      console.log("Testing: ", tests)
+      setProfiles(tests ?? []);
+    };
+    fetchProfiles();
+  }, []);
 
   useEffect(() => {
     const updateIsMobile = () => setIsMobile(window.matchMedia("(max-width: 767px)").matches);
@@ -20,43 +35,49 @@ const Services = () => {
     window.addEventListener("resize", updateIsMobile);
     return () => window.removeEventListener("resize", updateIsMobile);
   }, []);
-  
+
   const services: Service[] = [
     {
       id: 1,
       title: "Laddstolpar",
-      image: "/Images/uteInstallation2.webp",
-      description: "Noggrant utförda installationer av laddstolpar gör det enkelt att ladda elbilen snabbt, säkert och hållbart.",
+      image: "/Images/Services/uteInstallation2.webp",
+      description:
+        "Noggrant utförda installationer av laddstolpar gör det enkelt att ladda elbilen snabbt, säkert och hållbart.",
     },
     {
       id: 2,
       title: "Byggström",
-      image: "/Images/byggström.jpg",
-      description: "Tillfälliga och säkra elinstallationer för byggarbetsplatser, anpassade efter projektets behov och gällande krav.",
+      image: "/Images/Services/byggström.jpg",
+      description:
+        "Tillfälliga och säkra elinstallationer för byggarbetsplatser, anpassade efter projektets behov och gällande krav.",
     },
     {
       id: 3,
       title: "Elbesiktning",
-      image: "/Images/ElMatning.webp",
-      description: "Noggrann elbesiktning som säkerställer att installationer uppfyller gällande säkerhetskrav och fungerar som de ska.",
+      image: "/Images/Services/ElMatning.webp",
+      description:
+        "Noggrann elbesiktning som säkerställer att installationer uppfyller gällande säkerhetskrav och fungerar som de ska.",
     },
     {
       id: 4,
       title: "Felsökningar",
-      image: "/Images/felsokningReparationer.webp",
-      description: "Professionell felsökning och reparation av ditt elsystem, inklusive åtgärd av kortslutningar, strömavbrott och andra elektriska fel.",
+      image: "/Images/Services/felsokningReparationer.webp",
+      description:
+        "Professionell felsökning och reparation av ditt elsystem, inklusive åtgärd av kortslutningar, strömavbrott och andra elektriska fel.",
     },
     {
       id: 5,
       title: "Konsultation",
-      image: "/Images/uteKablar.webp",
-      description: "Rådgivning och planering för trygga, effektiva och hållbara el-lösningar anpassade efter dina behov.",
+      image: "/Images/Services/uteKablar.webp",
+      description:
+        "Rådgivning och planering för trygga, effektiva och hållbara el-lösningar anpassade efter dina behov.",
     },
-       {
+    {
       id: 6,
       title: "Elinstallationer",
-      image: "/Images/ElCentralArbete.webp",
-      description: "Dina elinstallationer uppdateras med den senaste tekniken och moderna lösningar för bästa resultat, anpassat för just dina behov och din vardag.",
+      image: "/Images/Services/ElCentralArbete.webp",
+      description:
+        "Dina elinstallationer uppdateras med den senaste tekniken och moderna lösningar för bästa resultat, anpassat för just dina behov och din vardag.",
     },
   ];
 
@@ -66,17 +87,21 @@ const Services = () => {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 flex items-center justify-center pt-8 pb-40">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 flex items-center justify-center px-5 sm:px-0 pt-8 pb-40">
       <div className="max-w-6xl w-full">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">Våra tjänster</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Från enkla reparationer till komplexa installationer erbjuder vi omfattande 
-            elektriska tjänster för bostäder och kommersiella fastigheter.
+            Från enkla reparationer till komplexa installationer erbjuder vi omfattande elektriska tjänster för bostäder
+            och kommersiella fastigheter.
           </p>
+          <span>Testing array</span> <br />
+       { profiles.map((profile, idx) => (
+          <p key={profile.id ?? idx}>{idx} {JSON.stringify(profile.text ?? "Not found")} asdasda</p>
+        ))}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 2xl:gap-20 gap-8 justify-items-center content">
-          {services.slice(0,65).map((service) => (
+          {services.slice(0, 65).map((service) => (
             <div
               key={service.id}
               onClick={() => handleCardClick(service.id)}
@@ -97,12 +122,22 @@ const Services = () => {
                   `}
             >
               {/* Background Image */}
-              <Image fill loading="lazy" src={service.image} alt={service.title} className="absolute inset-0 w-full h-full object-cover" />
+              <Image
+                fill
+                loading="lazy"
+                src={service.image}
+                alt={service.title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
 
               {/* Overlay with blur */}
               <div
                 className={`absolute inset-0 transition-all duration-500
-                ${isMobile && expandedCard === service.id ? "bg-black/20 backdrop-blur-none" : "bg-black/40 backdrop-blur-sm"}
+                ${
+                  isMobile && expandedCard === service.id
+                    ? "bg-black/20 backdrop-blur-none"
+                    : "bg-black/40 backdrop-blur-sm"
+                }
                 md:hover:backdrop-blur-none md:hover:bg-black/20
               `}
               />

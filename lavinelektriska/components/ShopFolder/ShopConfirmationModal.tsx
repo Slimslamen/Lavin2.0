@@ -1,12 +1,11 @@
 import { useEffect, useRef } from "react";
-import { X, CheckCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ShopConfirmationModalProps } from "./shopInterface";
+import Image from "next/image";
 const useNavigate = () => {
   const router = useRouter();
   return (href: string) => router.push(href);
 };
-
 
 export default function ShopConfirmationModal({ onClose }: ShopConfirmationModalProps) {
   const closeBtnRef = useRef<HTMLButtonElement>(null);
@@ -44,20 +43,25 @@ export default function ShopConfirmationModal({ onClose }: ShopConfirmationModal
           <button
             ref={closeBtnRef}
             onClick={onClose}
-            className="cursor-pointer ShopClose w-9 h-9 rounded-full bg-[#66BEF0] hover:scale-95 flex items-center justify-center focus:outline-none"
+            className="cursor-pointer ShopClose w-9 h-9 rounded-full text-white font-bold bg-[#66BEF0] hover:scale-95 flex items-center justify-center focus:outline-none"
             aria-label="Stäng"
           >
-            <X className="w-5 h-5 text-white" />
+            X
           </button>
         </header>
 
         <div className="px-6 py-8 text-center">
-          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#66BEF0]/10">
-            <CheckCircle className="h-7 w-7 text-[#66BEF0]" />
+          <div className="relative mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#66BEF0]/10">
+            <Image
+              src="/svg/LavinCheck.svg"
+              alt="Check icon"
+              width={24}
+              height={24}
+              loading="lazy"
+              className="w-8 h-8 absolute top-2 right-2"
+            />
           </div>
-          <p className="text-xl font-bold text-gray-900 mb-2">
-            Din beställning har lagts!
-          </p>
+          <p className="text-xl font-bold text-gray-900 mb-2">Din beställning har lagts!</p>
           <p className="text-sm text-gray-600 max-w-sm mx-auto">
             Vi återkommer så snabbt vi kan. Under tiden kan du återgå till startsidan.
           </p>

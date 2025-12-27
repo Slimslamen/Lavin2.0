@@ -9,12 +9,15 @@ type BundleItem = {
   id: string;
   name: string;
   price: number;
+  image?: string;
+  description?: string;
 };
 
 export type BundleConfig = {
   name: string;
   basePrice: number;
   maxItems: number;
+  icon?: string;
   items: BundleItem[];
 };
 
@@ -33,7 +36,7 @@ type BundlePiece = {
 };
 
 type Bundle = {
-  icon: ComponentType<{ className?: string; 'aria-hidden'?: boolean }>;
+  icon: string;
   name: string;
   blurb: string;
   basePrice: number | string;
@@ -52,14 +55,14 @@ export type ShopConfirmationModalProps = {
 
 type BundlePieces = { name: string; items: BundlePiece[] };
 export type ShopFormProps = {
-  bundle: Bundle;
-  selectedIds: Array<string | number>;
+  bundle: BundleConfig;
+  selectedIds: string[];
   total: number;
   onSuccess?: (payload: {
     name: string;
     phone: string;
     email: string;
-    selected: Array<string | number>;
+    selected: string[];
     total: number;
   }) => void;
 };

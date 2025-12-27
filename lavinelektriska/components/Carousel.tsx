@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import Image from "next/image";
 
 const Carousel = () => {
@@ -10,18 +9,18 @@ const Carousel = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const allImages = [
-    { id: 2, url: "/Images/ArbeteKöksskåp.webp" },
-    { id: 1, url: "/Images/ButiksBild.webp" },
-    { id: 3, url: "/Images/ElCentralArbete.webp" },
-    { id: 4, url: "/Images/Grönuttag.webp" },
-    { id: 6, url: "/Images/Ställarbete.webp" },
-    { id: 5, url: "/Images/Golvrenovering.webp" },
-    { id: 8, url: "/Images/Köksbild.webp" },
-    { id: 7, url: "/Images/uteInstallation.webp" },
-    { id: 9, url: "/Images/VägUttagNära.webp" },
-    { id: 10, url: "/Images/ElCentral.webp" },
-    { id: 11, url: "/Images/SpikaBetong.webp" },
-    { id: 12, url: "/Images/Badrum.webp" },
+    { id: 2, url: "/Images/Carousel/ArbeteKöksskåp.webp" },
+    { id: 1, url: "/Images/Carousel/ButiksBild.webp" },
+    { id: 3, url: "/Images/Carousel/ElCentralArbete.webp" },
+    { id: 4, url: "/Images/Carousel/Grönuttag.webp" },
+    { id: 6, url: "/Images/Carousel/Ställarbete.webp" },
+    { id: 5, url: "/Images/Carousel/Golvrenovering.webp" },
+    { id: 8, url: "/Images/Carousel/Köksbild.webp" },
+    { id: 7, url: "/Images/Carousel/uteInstallation.webp" },
+    { id: 9, url: "/Images/Carousel/VägUttagNära.webp" },
+    { id: 10, url: "/Images/Carousel/ElCentral.webp" },
+    { id: 11, url: "/Images/Carousel/SpikaBetong.webp" },
+    { id: 12, url: "/Images/Carousel/Badrum.webp" },
   ];
 
   // Layout configurations for different pages
@@ -156,18 +155,17 @@ const Carousel = () => {
 
       {selectedImage && (
         <div
-          className="md:fixed hidden inset-0 bg-black/85 z-1000 md:h-[90vh] 2xl:h-[60vh] md:flex items-center justify-center p-4 rounded-lg"
-          onClick={() => setSelectedImage(null)}
+          className="md:fixed hidden inset-0 bg-black/85 z-[1000] md:h-[90vh] 2xl:h-[60vh] md:flex items-center justify-center p-4 rounded-lg"
           role="dialog"
           aria-modal="true"
           aria-label="Bildförhandsvisning"
         >
           <button
             onClick={() => setSelectedImage(null)}
-            className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all duration-200 w-8 h-8 flex items-center justify-center"
+            className="absolute top-4 right-4 text-white font-bold bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all duration-200 w-8 h-8 flex items-center justify-center"
             aria-label="Stäng"
           >
-            <X className="w-6 h-6 absolute text-white" />
+            X
           </button>
 
           <Image
@@ -175,7 +173,7 @@ const Carousel = () => {
             src={selectedImage.url}
             alt="Förstorad bild"
             className=" max-h-[80vh] 2xl:max-h-[50vh] object-contain rounded-lg shadow-2xl mt-10"
-            onClick={(e) => e.stopPropagation()}
+            onClick={() => setSelectedImage(null)}
           />
         </div>
       )}

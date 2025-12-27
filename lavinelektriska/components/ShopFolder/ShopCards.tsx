@@ -1,4 +1,7 @@
-import type { ComponentType } from 'react';
+"use client";
+
+import Image from "next/image";
+import { useEffect } from "react";
 
 type BundleItem = {
   id: string | number;
@@ -6,7 +9,7 @@ type BundleItem = {
 };
 
 type Bundle = {
-  icon: ComponentType<{ className?: string; 'aria-hidden'?: boolean }>;
+  icon: string;
   name: string;
   blurb: string;
   basePrice: number | string;
@@ -20,13 +23,26 @@ interface ShopCardsProps {
 }
 
 export default function ShopCards({ bundle, onSelect }: ShopCardsProps) {
-    const Icon = bundle.icon;
-    
+  useEffect(() => {
+    console.log(bundle.icon);
+  }, []);
+
   return (
-     <div className={`${bundle.name === "Standardpaket" ? "outline-[#66BEF0] outline-1" : ""} bg-white p-10 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col 2xl:h-[30rem] h-[30rem]`}>
+    <div
+      className={`${
+        bundle.name === "Standardpaket" ? "outline-[#66BEF0] outline-1" : ""
+      } bg-white p-10 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col 2xl:h-[30rem] h-[30rem]`}
+    >
       <div className="flex items-center gap-3 mb-4">
-        <span className="w-12 h-12 rounded-xl bg-[#66bdf06f] flex items-center justify-center">
-          <Icon className="w-6 h-6 text-[#66BEF0]" aria-hidden={true} />
+        <span className="relative w-12 h-12 rounded-xl bg-[#66BEF0] flex items-center justify-center">
+          <Image
+            src={bundle.icon}
+            alt="Ficon"
+            width={24}
+            height={24}
+            loading="lazy"
+            className="w-8 h-8 absolute top-2 right-1"
+          />
         </span>
         <h2 className="text-2xl font-semibold text-gray-900">{bundle.name}</h2>
       </div>
@@ -45,9 +61,7 @@ export default function ShopCards({ bundle, onSelect }: ShopCardsProps) {
             {it.name}
           </li>
         ))}
-        {bundle.items.length > 3 && (
-          <li className="text-gray-500">… och fler val i konfiguratorn</li>
-        )}
+        {bundle.items.length > 3 && <li className="text-gray-500">… och fler val i konfiguratorn</li>}
       </ul>
 
       <div className="mt-auto">
@@ -60,5 +74,5 @@ export default function ShopCards({ bundle, onSelect }: ShopCardsProps) {
         </button>
       </div>
     </div>
-  )
+  );
 }

@@ -59,7 +59,7 @@ const Header = () => {
                 <h1 className="text-[#66BEF0] archivo-black-regular md:block">LAVIN</h1>
               </div>
               <div className="md:w-40 mt-2 rounded-lg flex items-center justify-center md:ml-0">
-                <Image width={500} height={500} src="/Images/LE.png" alt="Lavin Elektriska logotyp" loading='eager' className="rounded-[80px] mb-2" />
+                <Image width={500} height={500} src="/Images/Logo/LE.png" alt="Lavin Elektriska logotyp" loading='eager' className="rounded-[80px] mb-2" />
               </div>
               <div className="ml-5">
                 <h1 className="text-[#66BEF0] archivo-black-regular md:block">ELEKTRISKA</h1>

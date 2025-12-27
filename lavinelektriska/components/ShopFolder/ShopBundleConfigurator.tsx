@@ -1,12 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { X, Check } from "lucide-react";
+import { useEffect, useMemo, useRef, useState, type Ref } from "react";
 import ShopForm from "./ShopForm";
 import { RequestQuotePayload, ShopBundleConfiguratorProps } from "./shopInterface";
+import Itemselection from "./BundleConfig/Itemselection";
+import Itemsummary from "./BundleConfig/Itemsummary";
 
 type ShopFormSuccessData = Omit<RequestQuotePayload, "bundle">;
+type CartState = Record<string, number>;
 
 export default function ShopBundleConfigurator({ bundle, onClose, onRequestQuote }: ShopBundleConfiguratorProps) {
-  const [selected, setSelected] = useState<Set<string>>(() => new Set<string>());
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
@@ -18,135 +19,232 @@ export default function ShopBundleConfigurator({ bundle, onClose, onRequestQuote
     return () => document.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  const total = useMemo(() => {
-    let sum = bundle.basePrice;
-    for (const id of selected) {
+  function ConfiguratorContent({
+    bundle,
+    onClose,
+    onRequestQuote,
+    closeBtnRef,
+  }: {
+    bundle: ShopBundleConfiguratorProps["bundle"];
+    onClose: ShopBundleConfiguratorProps["onClose"];
+    onRequestQuote: ShopBundleConfiguratorProps["onRequestQuote"];
+    closeBtnRef: Ref<HTMLButtonElement>;
+  }) {
+    const [step, setStep] = useState(0);
+    const [cart, setCart] = useState<CartState>({});
+    const [expandedId, setExpandedId] = useState<string | null>(null);
+
+    const selectedEntries = useMemo(() => Object.entries(cart).filter(([, qty]) => qty > 0), [cart]);
+
+    const selectedCount = useMemo(() => selectedEntries.reduce((sum, [, qty]) => sum + qty, 0), [selectedEntries]);
+
+    const selectedIds = useMemo(() => {
+      const ids: string[] = [];
+      for (const [id, qty] of selectedEntries) {
+        for (let i = 0; i < qty; i += 1) ids.push(id);
+      }
+      return ids;
+    }, [selectedEntries]);
+
+    const extrasTotal = useMemo(() => {
+      return selectedEntries.reduce((sum, [id, qty]) => {
+        const item = bundle.items.find((i) => i.id === id);
+        if (!item) return sum;
+        return sum + item.price * qty;
+      }, 0);
+    }, [bundle.items, selectedEntries]);
+
+    const total = useMemo(() => bundle.basePrice + extrasTotal, [bundle.basePrice, extrasTotal]);
+
+    const max = bundle.maxItems ?? 0;
+    const reachedLimit = max > 0 && selectedCount >= max;
+    const remaining = max > 0 ? Math.max(0, max - selectedCount) : undefined;
+
+    const incrementItem = (id: string) => {
+      setCart((prev) => {
+        const currentTotal = Object.values(prev).reduce((sum, qty) => sum + qty, 0);
+        if (max > 0 && currentTotal >= max) return prev;
+        const nextQty = (prev[id] ?? 0) + 1;
+        setExpandedId(id);
+        return { ...prev, [id]: nextQty };
+      });
+    };
+
+    const decrementItem = (id: string) => {
+      setCart((prev) => {
+        const current = prev[id] ?? 0;
+        if (current <= 0) return prev;
+        const nextQty = current - 1;
+        const next = { ...prev };
+        if (nextQty <= 0) {
+          delete next[id];
+          setExpandedId((prevExpanded) => (prevExpanded === id ? null : prevExpanded));
+        } else next[id] = nextQty;
+        return next;
+      });
+    };
+
+    const clearCart = () => {
+      setCart({});
+      setExpandedId(null);
+    };
+
+    const goNext = () => setStep((s) => Math.min(2, s + 1));
+    const goPrev = () => setStep((s) => Math.max(0, s - 1));
+
+    const stepLabels = ["Välj produkter", "Din kundvagn", "Uppgifter"];
+    const cartIsEmpty = selectedEntries.length === 0;
+
+    const resolveImage = (id: string) => {
       const item = bundle.items.find((i) => i.id === id);
-      if (item) sum += item.price;
-    }
-    return sum;
-  }, [bundle, selected]);
+      if (!item) return bundle.icon ?? "/svg/box-svgrepo-com.svg";
+      return item.image ?? bundle.icon ?? "/svg/box-svgrepo-com.svg";
+    };
 
-  const toggle = (id: string) => {
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else if (next.size < bundle.maxItems) next.add(id);
-      return next;
-    });
-  };
+    const toggleDescription = (id: string) => {
+      setExpandedId((prev) => (prev === id ? null : id));
+    };
 
-  const atLimit = selected.size >= bundle.maxItems;
+    const renderStepContent = () => {
+      if (step === 0) {
+        return (
+          <Itemselection
+            bundle={bundle}
+            cart={cart}
+            max={max}
+            remaining={remaining}
+            reachedLimit={reachedLimit}
+            resolveImage={resolveImage}
+            expandedId={expandedId}
+            onToggleDescription={toggleDescription}
+            incrementItem={incrementItem}
+            decrementItem={decrementItem}
+          />
+        );
+      }
 
-  return (
-    <div
-      className="fixed inset-0 z-1000"
-      role="dialog"
-      aria-modal="true"
-      aria-label={`${bundle.name} – konfigurator`}
-      onClick={onClose}
-    >
-      <div className="absolute inset-0 bg-black/40" />
+      if (step === 1) {
+        return (
+          <Itemsummary
+            bundle={bundle}
+            cartIsEmpty={cartIsEmpty}
+            selectedEntries={selectedEntries}
+            decrementItem={decrementItem}
+            incrementItem={incrementItem}
+            reachedLimit={reachedLimit}
+            total={total}
+            clearCart={clearCart}
+            max={max}
+            remaining={remaining}
+          />
+        );
+      }
 
-      <div
-        className="relative top-20 sm:top-auto mx-auto mt-10 mb-6 w-23rem sm:w-auto max-w-3xl bg-white rounded-2xl shadow-2xl sm:h-auto h-[40rem] overflow-auto sm:overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <header className="flex items-center justify-between px-6 py-4 border-b bg-li-to-r from-gray-50 to-blue-50">
-          <div>
-            <h3 className="text-xl font-semibold text-gray-900">{bundle.name}</h3>
-            <p className="text-sm text-gray-600">Välj upp till {bundle.maxItems} tillval</p>
-          </div>
-          <button
-            ref={closeBtnRef}
-            onClick={onClose}
-            className="cursor-pointer ShopClose w-9 h-9 rounded-full bg-[#66BEF0] hover:scale-95 flex items-center justify-center focus:outline-none"
-            aria-label="Stäng"
-          >
-            <X className="w-5 h-5 text-white" />
-          </button>
-        </header>
-
-        <div className="px-6 py-5 grid md:grid-cols-2 gap-6">
-          <section>
-            <h4 className="text-sm font-semibold text-gray-900 mb-3">Tillgängliga tillval</h4>
-            <ul className="space-y-2">
-              {bundle.items.map((it) => {
-                const checked = selected.has(it.id);
-                const disabled = !checked && atLimit;
-                return (
-                  <li key={it.id} className="flex items-center justify-between gap-3 text bg-gray-50 rounded-lg px-3 py-2">
-                    <div className="flex items-center gap-3">
-                      <button
-                        onClick={() => toggle(it.id)}
-                        disabled={disabled}
-                        className={`cursor-pointer ShopSpecific w-6 h-6 rounded border flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-[#66BEF0] ${
-                          checked ? "bg-[#66BEF0] border-[#66BEF0]" : "bg-white border-gray-300"
-                        } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
-                        aria-pressed={checked}
-                        aria-label={`${checked ? "Avmarkera" : "Välj"} ${it.name}`}
-                      >
-                        {checked && <Check className="w-4 h-4 text-white" />}
-                      </button>
-                      <div>
-                        <div className="text-sm font-medium text-gray-900">{it.name}</div>
-                        <div className="text-xs text-gray-500">{it.price} kr</div>
-                      </div>
-                    </div>
-                    <div className="text-sm text-gray-700">{checked ? "Vald" : ""}</div>
-                  </li>
-                );
-              })}
-            </ul>
-            <p className="text-xs text-gray-500 mt-2">Du kan välja {bundle.maxItems} tillval i detta paket.</p>
-          </section>
-
-          <aside className="bg-gray-50 rounded-xl p-4 h-fit">
-            <h4 className="text-sm font-semibold text-gray-900 mb-3">Sammanfattning</h4>
-            <ul className="space-y-2 mb-3">
-              <li className="flex items-center justify-between text-sm">
+      return (
+        <div className="grid gap-5 lg:grid-cols-2">
+          <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+            <h4 className="text-sm font-semibold text-gray-900">Sammanfattning</h4>
+            <div className="mt-3 space-y-3 text-sm text-gray-700">
+              <div className="flex items-center justify-between">
                 <span>Grundpris</span>
-                <span className="font-medium">{bundle.basePrice} kr</span>
-              </li>
-              {[...selected].map((id) => {
-                const it = bundle.items.find((i) => i.id === id);
-                if (!it) return null;
+                <span className="font-semibold">{bundle.basePrice} kr</span>
+              </div>
+              {selectedEntries.map(([id, qty]) => {
+                const item = bundle.items.find((i) => i.id === id);
+                if (!item) return null;
                 return (
-                  <li key={id} className="flex items-center justify-between text-sm">
-                    <span>{it.name}</span>
-                    <span className="font-medium">{it.price} kr</span>
-                  </li>
+                  <div key={id} className="flex items-center justify-between">
+                    <span>
+                      {item.name} <span className="text-xs text-gray-500">x{qty}</span>
+                    </span>
+                    <span className="font-semibold">{item.price * qty} kr</span>
+                  </div>
                 );
               })}
-            </ul>
-            <div className="flex items-center justify-between py-2 border-t">
-              <span className="text-sm font-semibold text-gray-900">Uppskattat totalpris</span>
-              <span className="text-lg font-bold text-gray-900">{total} kr</span>
             </div>
-
-            <div className="mt-4">
-              <button
-                type="button"
-                onClick={() => setSelected(new Set<string>())}
-                className="flex items-center justify-center gap-2 py-2 mb-2 rounded-lg text-white bg-white border hover:bg-gray-100 transition-all transform duration-300 hover:scale-95"
-                aria-label="Rensa val"
-              >
-                 Rensa
-              </button>
+            <div className="mt-4 flex items-center justify-between border-t pt-4 text-sm font-semibold text-gray-900">
+              <span>Uppskattat totalpris</span>
+              <span className="text-lg font-bold">{total} kr</span>
             </div>
-
+          </div>
+          <div>
             <ShopForm
               bundle={bundle}
-              selectedIds={Array.from(selected)}
+              selectedIds={selectedIds}
               total={total}
               onSuccess={({ name, phone, email, selected, total: t }: ShopFormSuccessData) => {
                 onRequestQuote?.({ name, phone, email, selected, total: t, bundle: bundle.name });
                 onClose?.();
               }}
             />
-          </aside>
+          </div>
+        </div>
+      );
+    };
+
+    return (
+      <div
+        className="fixed inset-0 z-[1000]"
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${bundle.name} – konfigurator`}
+        onClick={onClose}
+      >
+        <div className="absolute inset-0 bg-black/40" />
+
+        <div
+          className="w-[23rem] sm:w-[60rem] relative mx-auto  mt-20 mb-6 max-w-4xl rounded-2xl bg-white shadow-2xl sm:mt-20"
+          onClick={(event) => event.stopPropagation()}
+        >
+          <header className=" flex flex-wrap items-center rounded-tl-lg rounded-tr-lg justify-between px-6 pt-4 pb-8">
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900">{bundle.name}</h3>
+              <p className="text-sm text-gray-600">Steg {step + 1} av 3 · {stepLabels[step]}</p>
+            </div>
+            <button
+              ref={closeBtnRef}
+              onClick={onClose}
+              className="ShopClose absolute cursor-pointer right-6 h-9 w-9 rounded-full bg-[#66BEF0] font-bold text-white transition hover:scale-95 focus:outline-none"
+              aria-label="Stäng konfigurator"
+            >
+              X
+            </button>
+          </header>
+
+          <main className="px-6 py-5">
+            {renderStepContent()}
+          </main>
+
+          <footer className="flex items-center justify-between gap-3 border-t px-6 py-4">
+            <button
+              type="button"
+              onClick={step === 0 ? onClose : goPrev}
+              className="inline-flex items-center justify-center rounded-lg border border-gray-300 px-4 py-2 text-sm text-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#66BEF0]"
+            >
+              {step === 0 ? "Avbryt" : "Tillbaka"}
+            </button>
+            {step < 2 && (
+              <button
+                type="button"
+                onClick={goNext}
+                className="inline-flex items-center justify-center rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+              >
+                Nästa
+              </button>
+            )}
+          </footer>
         </div>
       </div>
-    </div>
+    );
+  }
+
+  return (
+    <ConfiguratorContent
+      key={bundle.name}
+      bundle={bundle}
+      onClose={onClose}
+      onRequestQuote={onRequestQuote}
+      closeBtnRef={closeBtnRef}
+    />
   );
 }

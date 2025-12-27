@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "@formspree/react";
 import { ShopFormProps } from "./shopInterface";
 
@@ -19,10 +19,20 @@ export default function ShopForm({ bundle, selectedIds, total, onSuccess }: Shop
   const isValidName = (v: string) => v.trim().length > 0;
   const formValid = isValidName(name) && isValidPhone(phone) && isValidEmail(email);
 
-  const itemNames = selectedIds
-    .map((id) => bundle.items.find((i) => i.id === id)?.name)
-    .filter(Boolean)
-    .join(", ");
+  const itemNames = useMemo(() => {
+    const counts = selectedIds.reduce<Record<string, number>>((acc, id) => {
+      acc[id] = (acc[id] ?? 0) + 1;
+      return acc;
+    }, {});
+    return Object.entries(counts)
+      .map(([id, qty]) => {
+        const name = bundle.items.find((i) => i.id === id)?.name;
+        if (!name) return undefined;
+        return qty > 1 ? `${name} x${qty}` : name;
+      })
+      .filter(Boolean)
+      .join(", ");
+  }, [bundle.items, selectedIds]);
 
   return (
     <form

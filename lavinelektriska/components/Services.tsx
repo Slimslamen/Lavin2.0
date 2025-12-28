@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
 
 interface Service {
   id: number;
@@ -14,20 +13,6 @@ interface Service {
 const Services = () => {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [profiles, setProfiles] = useState<any[]>([]);
-
-  useEffect(() => {
-    const fetchProfiles = async () => {
-      const { data: tests, error } = await supabase.from("Testing").select("*");
-      if (error) {
-        console.error(error);
-        return;
-      }
-      console.log("Testing: ", tests)
-      setProfiles(tests ?? []);
-    };
-    fetchProfiles();
-  }, []);
 
   useEffect(() => {
     const updateIsMobile = () => setIsMobile(window.matchMedia("(max-width: 767px)").matches);
@@ -95,10 +80,6 @@ const Services = () => {
             Från enkla reparationer till komplexa installationer erbjuder vi omfattande elektriska tjänster för bostäder
             och kommersiella fastigheter.
           </p>
-          <span>Testing array</span> <br />
-       { profiles.map((profile, idx) => (
-          <p key={profile.id ?? idx}>{idx} {JSON.stringify(profile.text ?? "Not found")} asdasda</p>
-        ))}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 2xl:gap-20 gap-8 justify-items-center content">
           {services.slice(0, 65).map((service) => (

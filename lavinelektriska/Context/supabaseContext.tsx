@@ -11,7 +11,6 @@ type SupabaseContextType = {
   textsMap?: Record<string, string>
   refreshTexts?: () => Promise<void>
   signInWithPassword: (email: string, password: string) => ReturnType<typeof db.auth.signInWithPassword>
-  signInWithOAuth: (provider: string) => ReturnType<typeof db.auth.signInWithOAuth>
   signOut: () => ReturnType<typeof db.auth.signOut>
 }
 
@@ -20,13 +19,10 @@ const SupabaseContext = createContext<SupabaseContextType | undefined>(undefined
 export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [session, setSession] = useState<Session | null>(null)
   const [user, setUser] = useState<User | null>(null)
-  const [textsMap, setTextsMap] = useState<Record<string, string> | undefined>(undefined)
+  const [textsMap, setTextsMap] = useState<Record<string, string>>({})
 
   const signInWithPassword = (email: string, password: string) =>
     db.auth.signInWithPassword({ email, password })
-
-  const signInWithOAuth = (provider: string) =>
-    db.auth.signInWithOAuth({ provider })
 
   const signOut = () => db.auth.signOut()
 
@@ -35,9 +31,9 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     try {
       const res = await fetch('/api/texts', { cache: 'no-store' })
       if (!res.ok) return
-      // API now returns a map keyed by text_key
+      // API now returns a map keyed by normalized text_key -> text
       const data = await res.json()
-      setTextsMap(data ?? undefined)
+      setTextsMap(data ?? {})
     } catch (e) {
       console.error('Failed to load page texts', e)
     }
@@ -50,7 +46,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, [])
 
   return (
-    <SupabaseContext.Provider value={{ db, user, session, textsMap, refreshTexts: fetchTexts, signInWithPassword, signInWithOAuth, signOut }}>
+    <SupabaseContext.Provider value={{ db, user, session, textsMap, refreshTexts: fetchTexts, signInWithPassword, signOut }}>
       {children}
     </SupabaseContext.Provider>
   )

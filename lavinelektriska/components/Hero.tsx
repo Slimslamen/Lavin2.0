@@ -1,10 +1,11 @@
 "use client";
 
-import { Phone, CheckCircle, ArrowRight, ListChecks } from "lucide-react";
 import Image from "next/image";
+import { useSupabase } from "@/Context/supabaseContext";
 // import { MoneySend, TruckFast } from "iconsax-astro";
 
 const Hero = () => {
+  const { textsMap } = useSupabase();
   return (
     <section id="home" className="relative min-h-screen overflow-hidden" aria-label="Startsida hero">
       {/* Responsive background image without LQIP */}
@@ -34,21 +35,14 @@ const Hero = () => {
           <div className="animate-fade-in text-white">
             <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight">
               <span className="bg-linear-to-r from-white to-blue-200 bg-clip-text text-transparent">
-                Lavin Elektriska AB
+                  {textsMap?.hero_title_line1 ?? 'Lavin Elektriska AB'}
               </span>
               <br />
-              <span className="text-[#66BEF0] drop-shadow-lg text-[25px] opacity-70">Din pålitliga elpartner</span>
+                <span className="text-[#66BEF0] drop-shadow-lg text-[25px] opacity-70">{textsMap?.hero_title_line2 ?? 'Din pålitliga elpartner'}</span>
             </h1>
             <div className="space-y-6 mb-8 text-lg">
-              <p className="text-gray-200 leading-relaxed">
-                Sedan starten har vi jobbat på att bygga erfarenhet och kunskap inom el-branschen för att kunna erbjuda
-                våra kunder bästa möjliga service och kvalitet.
-              </p>
-              <p className="text-gray-300 leading-relaxed">
-                Vi gör mer än att dra kablar. Vi förverkligar dina idéer och skapar lösningar som får ditt hem eller
-                projekt att fungera precis som du vill. Hos oss får du en elpartner som ser helheten, bryr sig om
-                detaljerna och alltid arbetar för en lösning som passar just dina behov.
-              </p>
+                <p className="text-gray-200 leading-relaxed">{textsMap?.hero_p1 ?? 'Text laddar...'}</p>
+                <p className="text-gray-300 leading-relaxed">{textsMap?.hero_p2 ?? 'Text laddar...'}</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <a
@@ -65,7 +59,7 @@ const Hero = () => {
                   }
                 }}
               >
-                Gratis offert
+                {textsMap?.hero_cta ?? 'Gratis offert'}
               </a>
             </div>
             <div className="smallerbox grid grid-cols-1 sm:grid-cols-3 gap-4 smallerBox" aria-label="Företagsfördelar">
@@ -78,7 +72,7 @@ const Hero = () => {
                   loading="eager"
                   className="w-6 h-6"
                 />
-                <span className="text-sm font-medium">Elinstallationer</span>
+                <span className="text-sm font-medium">{textsMap?.hero_feature1_title ?? 'Elinstallationer'}</span>
               </div>
               <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-lg">
                 <Image
@@ -89,7 +83,7 @@ const Hero = () => {
                   loading="eager"
                   className="w-6 h-6"
                 />
-                <span className="text-sm font-medium">Renoveringar</span>
+                <span className="text-sm font-medium">{textsMap?.hero_feature2_title ?? 'Renoveringar'}</span>
               </div>
               <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-lg">
                 <Image
@@ -100,7 +94,7 @@ const Hero = () => {
                   loading="eager"
                   className="w-6 h-6"
                 />
-                <span className="text-sm font-medium">Nyproduktioner</span>
+                <span className="text-sm font-medium">{textsMap?.hero_feature3_title ?? 'Nyproduktioner'}</span>
               </div>
             </div>
           </div>
@@ -109,7 +103,7 @@ const Hero = () => {
               className="bg-white/10 backdrop-blur-2xl p-8 rounded-2xl border border-white/20 shadow-2xl"
               aria-label="Varför välja oss?"
             >
-              <h3 className="text-2xl font-bold text-white mb-6">Varför välja oss?</h3>
+              <h3 className="text-2xl font-bold text-white mb-6">{textsMap?.hero_right_title ?? 'Varför välja oss?'}</h3>
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-[#66BEF0] rounded-lg flex items-center justify-center">
@@ -124,8 +118,8 @@ const Hero = () => {
                     />
                   </div>
                   <div>
-                    <p className="text-white font-semibold">Snabb respons</p>
-                    <p className="text-gray-300 text-sm">Svarar inom 24 timmar</p>
+                    <p className="text-white font-semibold">{textsMap?.hero_right_item1_title ?? 'Snabb respons'}</p>
+                    <p className="text-gray-300 text-sm">{textsMap?.hero_right_item1_sub ?? 'Svarar inom 24 timmar'}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -140,8 +134,8 @@ const Hero = () => {
                     />
                   </div>
                   <div>
-                    <p className="text-white font-semibold">Transparent prissättning</p>
-                    <p className="text-gray-300 text-sm">Inga dolda kostnader</p>
+                    <p className="text-white font-semibold">{textsMap?.hero_right_item2_title ?? 'Transparent prissättning'}</p>
+                    <p className="text-gray-300 text-sm">{textsMap?.hero_right_item2_sub ?? 'Inga dolda kostnader'}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -156,8 +150,8 @@ const Hero = () => {
                     />
                   </div>
                   <div>
-                    <p className="text-white font-semibold">Kvalitetsgaranti</p>
-                    <p className="text-gray-300 text-sm">Garanti på allt arbete</p>
+                    <p className="text-white font-semibold">{textsMap?.hero_right_item3_title ?? 'Kvalitetsgaranti'}</p>
+                    <p className="text-gray-300 text-sm">{textsMap?.hero_right_item3_sub ?? 'Garanti på allt arbete'}</p>
                   </div>
                 </div>
               </div>

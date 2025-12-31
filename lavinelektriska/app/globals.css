@@ -142,8 +142,12 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+.edit{
+  font-size: 10px;
+  cursor: pointer;
+}
 
-button:not(#CarouselBtn, .ShopClose, .ShopSpecific, .ConfirmationBtn),
+button:not(.edit, .ultimateSave, #CarouselBtn, .ShopClose, .ShopSpecific, .ConfirmationBtn),
 #sendMessage {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -155,7 +159,7 @@ button:not(#CarouselBtn, .ShopClose, .ShopSpecific, .ConfirmationBtn),
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover:not(.ShopClose, #sendMessage, .ConfirmationBtn) {
+button:hover:not(.ultimateSave, .ShopClose, #sendMessage, .ConfirmationBtn) {
   background-color: #22aeff;
 }
 

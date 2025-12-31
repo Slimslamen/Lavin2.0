@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useSupabase } from "@/Context/supabaseContext";
+import EditableText from "./AdminEdit/EditableText";
 
 interface Service {
   id: number;
@@ -13,9 +15,10 @@ interface Service {
 const Services = () => {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const { textsMap } = useSupabase();
 
   useEffect(() => {
-    const updateIsMobile = () => setIsMobile(window.matchMedia("(max-width: 767px)").matches);
+    const updateIsMobile = () => setIsMobile(window.matchMedia("(max-width: 850px)").matches);
     updateIsMobile();
     window.addEventListener("resize", updateIsMobile);
     return () => window.removeEventListener("resize", updateIsMobile);
@@ -72,13 +75,19 @@ const Services = () => {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 flex items-center justify-center px-5 sm:px-0 pt-8 pb-40">
+    <div id="services" className="min-h-screen bg-linear-to-br from-slate-50 to-slate-100 flex items-center justify-center px-5 sm:px-0 pt-8 pb-40">
       <div className="max-w-6xl w-full">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Våra tjänster</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <EditableText textKey="services_heading" value={textsMap?.services_heading} fallback="Våra tjänster" />
+          </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Från enkla reparationer till komplexa installationer erbjuder vi omfattande elektriska tjänster för bostäder
-            och kommersiella fastigheter.
+            <EditableText
+              textKey="services_subheading"
+              value={textsMap?.services_subheading}
+              fallback="Från enkla reparationer till komplexa installationer erbjuder vi omfattande elektriska tjänster för bostäder och kommersiella fastigheter."
+              width="30rem"
+            />
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 2xl:gap-20 gap-8 justify-items-center content">
@@ -129,11 +138,23 @@ const Services = () => {
                 ${isMobile && expandedCard === service.id ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"}
                 md:group-hover:opacity-100 md:group-hover:translate-y-0`}
               >
-                {service.description}
+                <EditableText
+                  textKey={`services_item${service.id}_desc`}
+                  value={textsMap?.[`services_item${service.id}_desc`]}
+                  fallback={service.description}
+                  width={"30rem"}
+                />
               </p>
 
               {/* Title */}
-              <div className="absolute bottom-6 left-6 text-white font-semibold text-2xl">{service.title}</div>
+              <div className="absolute bottom-6 left-6 text-white font-semibold text-2xl">
+                <EditableText
+                  textKey={`services_item${service.id}_title`}
+                  value={textsMap?.[`services_item${service.id}_title`]}
+                  fallback={service.title}
+                  width={"15rem"}
+                />
+              </div>
             </div>
           ))}
         </div>

@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState, type Ref } from "react";
 import ShopForm from "./ShopForm";
 import { RequestQuotePayload, ShopBundleConfiguratorProps } from "./shopInterface";
 import Itemselection from "./BundleConfig/Itemselection";
-import Itemsummary from "./BundleConfig/Itemsummary";
 
 type ShopFormSuccessData = Omit<RequestQuotePayload, "bundle">;
 type CartState = Record<string, number>;
@@ -122,23 +121,6 @@ export default function ShopBundleConfigurator({ bundle, onClose, onRequestQuote
           />
         );
       }
-
-      // if (step === 1) {
-      //   return (
-      //     <Itemsummary
-      //       bundle={bundle}
-      //       cartIsEmpty={cartIsEmpty}
-      //       selectedEntries={selectedEntries}
-      //       decrementItem={decrementItem}
-      //       incrementItem={incrementItem}
-      //       reachedLimit={reachedLimit}
-      //       total={total}
-      //       clearCart={clearCart}
-      //       max={max}
-      //       remaining={remaining}
-      //     />
-      //   );
-      // }
 
       return (
         <div className="grid gap-5 lg:grid-cols-2">

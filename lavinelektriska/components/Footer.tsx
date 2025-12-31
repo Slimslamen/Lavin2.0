@@ -1,13 +1,44 @@
 "use client";
 
-import { FaInstagram, FaPhoneAlt, FaYoutube } from "react-icons/fa";
-import { IoMdMail } from "react-icons/io";
-import { SlSocialLinkedin } from "react-icons/sl";
-import { TfiFacebook } from "react-icons/tfi";
 import Link from "next/link";
 import Image from "next/image";
+import { useSupabase } from "@/Context/supabaseContext";
+import EditableText from "./AdminEdit/EditableText";
+import { useEffect, useMemo, useState } from "react";
 
 const Footer = () => {
+  const { textsMap, isAdmin, draftTextsMap, saveDraftTexts } = useSupabase();
+  const [isMobile, setIsMobile] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    const update = () => setIsMobile(window.innerWidth <= 767);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const hasDrafts = useMemo(() => {
+    return Object.keys(draftTextsMap ?? {}).length > 0;
+  }, [draftTextsMap]);
+
+  const canSave = isAdmin && !isMobile;
+
+  const onSave = async () => {
+    if (!saveDraftTexts) return;
+    setIsSaving(true);
+    try {
+      const result = await saveDraftTexts();
+      if (!result.success) {
+        alert(result.error);
+      } else if (result.saved > 0) {
+        alert(`Saved ${result.saved} text changes.`);
+      }
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
     <footer className="bg-gray-900 text-white py-12" role="contentinfo" aria-label="Sidfot">
       <div className="container mx-auto px-4">
@@ -20,18 +51,39 @@ const Footer = () => {
                 </span>
               </div>
               <div>
-                <h3 className="text-xl font-bold">Lavin Elektriska</h3>
-                <p className="text-sm text-gray-400">Auktoriserad & försäkrad</p>
+                <h3 className="text-xl font-bold">
+                  <EditableText
+                    textKey="footer_brand_title"
+                    value={textsMap?.footer_brand_title}
+                    fallback="Lavin Elektriska"
+                  />
+                </h3>
+                <p className="text-sm text-gray-400">
+                  <EditableText
+                    textKey="footer_brand_subtitle"
+                    value={textsMap?.footer_brand_subtitle}
+                    fallback="Auktoriserad & försäkrad"
+                  />
+                </p>
               </div>
             </span>
             <p className="text-gray-400 leading-relaxed">
-              Professionella elektriska tjänster för bostäder och kommersiella fastigheter. Din pålitliga partner för
-              säkra, tillförlitliga elektriska lösningar.
+              <EditableText
+                textKey="footer_brand_description"
+                value={textsMap?.footer_brand_description}
+                fallback="Professionella elektriska tjänster för bostäder och kommersiella fastigheter. Din pålitliga partner för säkra, tillförlitliga elektriska lösningar."
+              />
             </p>
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold mb-4">Kontaktinfo</h4>
+            <h4 className="text-lg font-semibold mb-4">
+              <EditableText
+                textKey="footer_contact_heading"
+                value={textsMap?.footer_contact_heading}
+                fallback="Kontaktinfo"
+              />
+            </h4>
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <Image
@@ -42,7 +94,13 @@ const Footer = () => {
                   loading="lazy"
                   className="w-6 h-6"
                 />
-                <span className="text-gray-400">+46729110256</span>
+                <span className="text-gray-400">
+                  <EditableText
+                    textKey="footer_contact_phone"
+                    value={textsMap?.footer_contact_phone}
+                    fallback="+46729110256"
+                  />
+                </span>
               </div>
               <div className="flex items-center gap-3">
                  <Image
@@ -53,13 +111,21 @@ const Footer = () => {
                   loading="lazy"
                   className="w-6 h-6"
                 />
-                <span className="text-gray-400">Le@lavinelektriska.se</span>
+                <span className="text-gray-400">
+                  <EditableText
+                    textKey="footer_contact_email"
+                    value={textsMap?.footer_contact_email}
+                    fallback="Le@lavinelektriska.se"
+                  />
+                </span>
               </div>
             </div>
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold mb-4">Följ oss</h4>
+            <h4 className="text-lg font-semibold mb-4">
+              <EditableText textKey="footer_follow_heading" value={textsMap?.footer_follow_heading} fallback="Följ oss" />
+            </h4>
             <div className="flex gap-4 mb-6">
               <Link
                 href="https://www.instagram.com/lavinelektriska/?igsh=Yjk4YzhqYWx5ZXoz#"
@@ -111,7 +177,7 @@ const Footer = () => {
               </Link>
             </div>
 
-            <div className="text-center flex flex-row items-center justify-center md:ml-[-10px]">
+            <div className="text-center flex flex-row items-center justify-center md:-ml-2.5">
               <Image
                 width={24}
                 height={24}
@@ -121,22 +187,46 @@ const Footer = () => {
                 className="w-10 h-10"
               />
               <div className="bg-orange-500 text-white py-1 rounded-full text-sm font-semibold inline-block">
-                Godkända av: ELSÄKERHETSVERKET
+                <EditableText
+                  textKey="footer_approval_badge"
+                  value={textsMap?.footer_approval_badge}
+                  fallback="Godkända av: ELSÄKERHETSVERKET"
+                />
               </div>
             </div>
           </div>
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row md:justify-between justify-center text-center items-center">
-          <p className="text-gray-400 text-center md:text-left">©2026 Lavin Elektriska AB.</p>
+          <p className="text-gray-400 text-center md:text-left">
+            <EditableText
+              textKey="footer_copyright"
+              value={textsMap?.footer_copyright}
+              fallback="©2026 Lavin Elektriska AB."
+            />
+          </p>
           <div className="mt-4 md:mt-0">
             <Link
               href="/policy"
               className="text-gray-400 hover:text-[#66BEF0] transition-colors"
               aria-label="Sekretesspolicy"
-            >
-              Sekretesspolicy
+              >
+              <EditableText
+                textKey="footer_policy_link"
+                value={textsMap?.footer_policy_link}
+                fallback="Sekretesspolicy"
+                />
             </Link>
+                {canSave && (
+                  <button
+                    type="button"
+                    onClick={onSave}
+                    disabled={isSaving || !hasDrafts}
+                    className="ultimateSave cursor-pointer mt-4 text-white bg-[#66BEF0] hover:scale-95 duration-300 transition-transform rounded-lg py-1 disabled:opacity-50 disabled:hover:text-gray-400"
+                  >
+                    {isSaving ? "Saving..." : "Save"}
+                  </button>
+                )}
           </div>
         </div>
       </div>

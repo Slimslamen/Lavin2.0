@@ -4,11 +4,16 @@ import SecondHeader from "../../components/SeconHeader";
 import Footer from "../../components/Footer";
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useSupabase } from "../../Context/supabaseContext";
 export default function AdminPage() {
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
+  const { signInWithPassword } = useSupabase();
 
   return (
     <div>
@@ -29,21 +34,20 @@ export default function AdminPage() {
           <div className="container mx-auto px-4">
             <div className="max-w-md mx-auto bg-white rounded-xl border border-gray-100 shadow-sm p-6">
               <form
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
                   setError(null);
                   setLoading(true);
-                  // TODO: Connect to auth provider or server action
-                  setTimeout(() => {
+
+                  const { error } = await signInWithPassword(email, password);
+
+                  if (error) {
+                    setError(error.message);
                     setLoading(false);
-                    // Simple placeholder validation
-                    if (!email || !password) {
-                      setError("Vänligen fyll i både e‑post och lösenord.");
-                      return;
-                    }
-                    // Placeholder: success path
-                    alert("Inloggning skickad (demo). Koppla till riktig auth.");
-                  }, 600);
+                    return;
+                  }
+                  setLoading(false);
+                  router.push("/");
                 }}
                 aria-label="Admin inloggningsformulär"
               >

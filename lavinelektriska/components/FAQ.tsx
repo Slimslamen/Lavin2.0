@@ -122,9 +122,17 @@ const FAQ = () => {
 
             return (
               <div key={faq.id} className="mb-4 relative" role="listitem">
-                <button
+                <div
+                  role="button"
+                  tabIndex={0}
                   onClick={() => toggleFAQ(index)}
-                  className="w-full p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow text-left flex items-center justify-between group"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      toggleFAQ(index);
+                    }
+                  }}
+                  className="w-full bg-[#66BEF0] p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow text-left flex items-center justify-between group cursor-pointer"
                   aria-expanded={openIndex === index}
                   aria-controls={`faq-panel-${index}`}
                   id={`faq-button-${index}`}
@@ -133,7 +141,7 @@ const FAQ = () => {
                     <EditableText width="25rem" textKey={questionKey} value={textsMap?.[questionKey]} fallback={questionText} />
                   </h3>
                   <div
-                    className="w-8 h-8 bg-[#66BEF0] bg-opacity-10 rounded-lg flex items-center justify-center shrink-0 ml-4"
+                    className="w-8 h-8 bg-opacity-10 rounded-lg flex items-center justify-center shrink-0 ml-4"
                     aria-hidden="true"
                   >
                     {openIndex === index ? (
@@ -143,7 +151,7 @@ const FAQ = () => {
                         width={24}
                         height={24}
                         loading="lazy"
-                        className="w-8 h-8 absolute top-3 right-5"
+                        className="w-8 h-8 absolute top-6 right-6"
                       />
                     ) : (
                       <Image
@@ -152,11 +160,11 @@ const FAQ = () => {
                         width={24}
                         height={24}
                         loading="lazy"
-                        className="w-8 h-8 absolute top-3 right-5"
+                        className="w-8 h-8 absolute top-6 right-6"
                       />
                     )}
                   </div>
-                </button>
+                </div>
 
                 <div
                   id={`faq-panel-${index}`}

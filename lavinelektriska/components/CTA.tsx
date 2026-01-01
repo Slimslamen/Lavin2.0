@@ -75,18 +75,27 @@ const CTA = () => {
                 fallback="Vi svarar vanligtvis inom 24 timmar"
               />
             </p>
-            <button
+            <div
               id="sendMessage"
+              role="button"
+              tabIndex={0}
               onClick={() => setShowContact(!showContact)}
-              className="bg-[#66BEF0] text-white px-6 py-3 rounded-lg font-semibold inline-block"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setShowContact(!showContact);
+                }
+              }}
+              className="bg-[#66BEF0] text-white px-6 py-3 rounded-lg font-semibold inline-block cursor-pointer"
               aria-label="Skicka e-post"
+              aria-expanded={showContact}
             >
               <EditableText
                 textKey="cta_card_message_button"
                 value={textsMap?.cta_card_message_button}
                 fallback="Skicka e-post"
               />
-            </button>
+            </div>
           </div>
 
           <div className="bg-white/10 backdrop-blur-sm p-8 rounded-2xl text-center hover:bg-white/20 transition-all duration-300 hover:-translate-y-2">

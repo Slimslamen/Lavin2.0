@@ -92,7 +92,11 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
       const data = await res.json().catch(() => null)
       if (!res.ok) {
-        const message = typeof data?.error === 'string' ? data.error : 'Failed to save'
+        const base = typeof data?.error === 'string' ? data.error : 'Failed to save'
+        const extraParts = [data?.code, data?.details, data?.hint]
+          .filter((v: unknown) => typeof v === 'string' && v.length > 0)
+          .join(' | ')
+        const message = extraParts ? `${base} (${extraParts})` : base
         return { success: false as const, error: message }
       }
 

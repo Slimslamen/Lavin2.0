@@ -33,7 +33,7 @@ const Contact = ({showContent}: {showContent: boolean}) => {
                     required
                     type='text' 
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BEF0] focus:border-transparent"
-                    placeholder="Stefan"
+                    placeholder="Förnamn"
                     name='firstname'
                   />
                 </div>
@@ -44,7 +44,7 @@ const Contact = ({showContent}: {showContent: boolean}) => {
                     required
                     type="text" 
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BEF0] focus:border-transparent"
-                    placeholder="Magnusson"
+                    placeholder="Efternamn"
                     name='lastname'
                   />
                 </div>
@@ -59,7 +59,7 @@ const Contact = ({showContent}: {showContent: boolean}) => {
                     id='email'
                     name='email'
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#66BEF0] focus:border-transparent"
-                    placeholder="Stefan@Lavinelektriska.com"
+                    placeholder="le@lavinelektriska.com"
                     aria-required="true"
                     aria-label="E-postadress"
                   />

@@ -5,11 +5,14 @@ import Image from "next/image";
 import { useSupabase } from "@/Context/supabaseContext";
 import EditableText from "./AdminEdit/EditableText";
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Footer = () => {
-  const { textsMap, isAdmin, draftTextsMap, saveDraftTexts } = useSupabase();
+  const { textsMap, isAdmin, draftTextsMap, saveDraftTexts, signOut } = useSupabase();
+  const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
 
   useEffect(() => {
     const update = () => setIsMobile(window.innerWidth <= 767);
@@ -36,6 +39,18 @@ const Footer = () => {
       }
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const onSignOut = async () => {
+    if (!signOut) return;
+    setIsSigningOut(true);
+    try {
+      await signOut();
+      router.push("/");
+      router.refresh();
+    } finally {
+      setIsSigningOut(false);
     }
   };
 
@@ -204,6 +219,17 @@ const Footer = () => {
               value={textsMap?.footer_copyright}
               fallback="©2026 Lavin Elektriska AB."
             />
+            {isAdmin && (
+              <button
+                type="button"
+                onClick={onSignOut}
+                disabled={isSigningOut}
+                className="ultimateSave w-96 cursor-pointer mt-3 text-white bg-[#66BEF0] hover:scale-95 duration-300 transition-transform rounded-lg py-1 px-3 disabled:opacity-50"
+                aria-label="Sign out"
+              >
+                {isSigningOut ? "Signing out..." : "Sign out"}
+              </button>
+            )}
           </p>
           <div className="mt-4 md:mt-0">
             <Link
@@ -222,7 +248,7 @@ const Footer = () => {
                     type="button"
                     onClick={onSave}
                     disabled={isSaving || !hasDrafts}
-                    className="ultimateSave cursor-pointer mt-4 text-white bg-[#66BEF0] hover:scale-95 duration-300 transition-transform rounded-lg py-1 disabled:opacity-50 disabled:hover:text-gray-400"
+                    className="ultimateSave w-96 cursor-pointer mt-4 text-white bg-[#66BEF0] hover:scale-95 duration-300 transition-transform rounded-lg py-1 disabled:opacity-50 disabled:hover:text-gray-400"
                   >
                     {isSaving ? "Saving..." : "Save"}
                   </button>

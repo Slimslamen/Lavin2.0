@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const Footer = () => {
-  const { textsMap, isAdmin, draftTextsMap, saveDraftTexts, signOut } = useSupabase();
+  const { textsMap, isAdmin, user, draftTextsMap, saveDraftTexts, signOut } = useSupabase();
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -47,7 +47,7 @@ const Footer = () => {
     setIsSigningOut(true);
     try {
       await signOut();
-      router.push("/");
+      router.push("/admin");
       router.refresh();
     } finally {
       setIsSigningOut(false);
@@ -213,13 +213,13 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row md:justify-between justify-center text-center items-center">
-          <p className="text-gray-400 text-center md:text-left">
+          <p className="text-gray-400 flex-col flex text-center md:text-left">
             <EditableText
               textKey="footer_copyright"
               value={textsMap?.footer_copyright}
               fallback="©2026 Lavin Elektriska AB."
             />
-            {isAdmin && (
+            {!!user && (
               <button
                 type="button"
                 onClick={onSignOut}

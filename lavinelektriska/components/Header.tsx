@@ -62,7 +62,7 @@ const Header = () => {
             <div className="flex items-center">
               <div className="md:w-52 mr-5">
                 <h1 className="text-[#66BEF0] archivo-black-regular md:block">
-                  <EditableText textKey="header_lavin" value={textsMap?.header_lavin} fallback="LAVIN" width={"10rem"} />
+                  LAVIN
                 </h1>
               </div>
               <div className="md:w-40 mt-2 rounded-lg flex items-center justify-center md:ml-0">
@@ -77,7 +77,7 @@ const Header = () => {
               </div>
               <div className="ml-5">
                 <h1 className="text-[#66BEF0] archivo-black-regular md:block">
-                  <EditableText textKey="header_elektriska" value={textsMap?.header_elektriska} fallback="ELEKTRISKA" width={"10rem"} />
+                  ELEKTRISKA
                 </h1>
               </div>
             </div>
@@ -89,7 +89,7 @@ const Header = () => {
                 className="text-gray-900 hover:text-[#66BEF0] transition-colors"
                 tabIndex={0}
               >
-                <EditableText textKey="header_hem" value={textsMap?.header_hem} fallback="Hem" />
+                Hem
               </a>
               <a
                 href="#services"
@@ -97,7 +97,7 @@ const Header = () => {
                 className="text-gray-900 hover:text-[#66BEF0] transition-colors"
                 tabIndex={0}
               >
-                <EditableText textKey="header_tjanster" value={textsMap?.header_tjanster} fallback="Tjänster" />
+                Tjänster
               </a>
               <a
                 href="#about"
@@ -105,7 +105,7 @@ const Header = () => {
                 className="text-gray-900 hover:text-[#66BEF0] transition-colors"
                 tabIndex={0}
               >
-                <EditableText textKey="header_erfarenhet" value={textsMap?.header_erfarenhet} fallback="Erfarenhet" />
+                Erfarenhet
               </a>
               <a
                 href="#FAQ"
@@ -113,7 +113,7 @@ const Header = () => {
                 className="text-gray-900 hover:text-[#66BEF0] transition-colors"
                 tabIndex={0}
               >
-                <EditableText textKey="header_faq" value={textsMap?.header_faq} fallback="FAQ" />
+                FAQ
               </a>
               <a
                 href="#CTA"
@@ -121,7 +121,7 @@ const Header = () => {
                 className="text-gray-900 hover:text-[#66BEF0] transition-colors"
                 tabIndex={0}
               >
-                <EditableText textKey="header_kontakt" value={textsMap?.header_kontakt} fallback="Kontakt" />
+                Kontakt
               </a>
               {/* <Link href="/Shop" id='ShopBtn' className="text-white hover:scale-95 transition-all duration-300 transform bg-[#66BEF0] py-1 rounded-lg ml-5" tabIndex="0">
                 Shop

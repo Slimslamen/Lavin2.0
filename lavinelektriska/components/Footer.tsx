@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 const Footer = () => {
-  const { textsMap, isAdmin, user, draftTextsMap, saveDraftTexts, signOut } = useSupabase();
+  const { textsMap, isAdmin, user, draftTextsMap, draftImagesMap, saveDraftTexts, saveDraftImages, signOut } = useSupabase();
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -22,20 +22,32 @@ const Footer = () => {
   }, []);
 
   const hasDrafts = useMemo(() => {
-    return Object.keys(draftTextsMap ?? {}).length > 0;
-  }, [draftTextsMap]);
+    return Object.keys(draftTextsMap ?? {}).length > 0 || Object.keys(draftImagesMap ?? {}).length > 0;
+  }, [draftTextsMap, draftImagesMap]);
 
   const canSave = isAdmin && !isMobile;
 
   const onSave = async () => {
-    if (!saveDraftTexts) return;
+    if (!saveDraftTexts && !saveDraftImages) return;
     setIsSaving(true);
     try {
-      const result = await saveDraftTexts();
-      if (!result.success) {
-        alert(result.error);
-      } else if (result.saved > 0) {
-        alert(`Saved ${result.saved} text changes.`);
+      const [textResult, imageResult] = await Promise.all([
+        saveDraftTexts ? saveDraftTexts() : Promise.resolve({ success: true as const, saved: 0 }),
+        saveDraftImages ? saveDraftImages() : Promise.resolve({ success: true as const, saved: 0 }),
+      ]);
+
+      if (!textResult.success) {
+        alert(textResult.error);
+        return;
+      }
+      if (!imageResult.success) {
+        alert(imageResult.error);
+        return;
+      }
+
+      const total = (textResult.saved ?? 0) + (imageResult.saved ?? 0);
+      if (total > 0) {
+        alert(`Saved ${textResult.saved} text changes and ${imageResult.saved} image changes.`);
       }
     } finally {
       setIsSaving(false);
@@ -196,7 +208,7 @@ const Footer = () => {
               <Image
                 width={24}
                 height={24}
-                src="/Images/Elsäkerhetsverket.png"
+                src="/Images/Logo/Elsäkerhetsverket.png"
                 loading="lazy"
                 alt="Elsäkerhetsverket logotyp"
                 className="w-10 h-10"

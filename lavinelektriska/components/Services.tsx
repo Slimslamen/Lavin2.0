@@ -35,7 +35,7 @@ const Services = () => {
     {
       id: 2,
       title: "Byggström",
-      image: "/Images/Services/byggström.jpg",
+      image: "/Images/Services/byggstrom.webp",
       description:
         "Tillfälliga och säkra elinstallationer för byggarbetsplatser, anpassade efter projektets behov och gällande krav.",
     },

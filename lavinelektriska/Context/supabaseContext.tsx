@@ -20,12 +20,20 @@ type SupabaseContextType = {
   setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>
   serverTextsMap?: Record<string, string>
   textsMap?: Record<string, string>
+  serverImagesMap?: Record<string, string>
+  imagesMap?: Record<string, string>
   draftTextsMap?: Record<string, string>
+  draftImagesMap?: Record<string, File>
   setDraftText?: (textKey: string, text: string) => void
   clearDraftText?: (textKey: string) => void
   clearAllDraftTexts?: () => void
+  setDraftImage?: (imageKey: string, file: File) => void
+  clearDraftImage?: (imageKey: string) => void
+  clearAllDraftImages?: () => void
   saveDraftTexts?: () => Promise<{ success: true; saved: number } | { success: false; error: string }>
+  saveDraftImages?: () => Promise<{ success: true; saved: number } | { success: false; error: string }>
   refreshTexts?: () => Promise<void>
+  refreshImages?: () => Promise<void>
   signInWithPassword: (email: string, password: string) => ReturnType<typeof db.auth.signInWithPassword>
   signOut: () => ReturnType<typeof db.auth.signOut>
 }
@@ -37,9 +45,12 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [user, setUser] = useState<User | null>(null)
   const [isAdmin, setIsAdmin] = useState(false)
   const [serverTextsMap, setServerTextsMap] = useState<Record<string, string>>({})
+  const [serverImagesMap, setServerImagesMap] = useState<Record<string, string>>({})
   const [draftTextsMap, setDraftTextsMap] = useState<Record<string, string>>({})
+  const [draftImagesMap, setDraftImagesMap] = useState<Record<string, File>>({})
 
   const textsMap = { ...serverTextsMap, ...draftTextsMap }
+  const imagesMap = { ...serverImagesMap }
 
   const setDraftText = (textKey: string, text: string) => {
     const normalizedKey = normalizeTextKey(textKey)
@@ -60,6 +71,25 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setDraftTextsMap({})
   }
 
+  const setDraftImage = (imageKey: string, file: File) => {
+    const normalizedKey = normalizeTextKey(imageKey)
+    setDraftImagesMap((prev) => ({ ...prev, [normalizedKey]: file }))
+  }
+
+  const clearDraftImage = (imageKey: string) => {
+    const normalizedKey = normalizeTextKey(imageKey)
+    setDraftImagesMap((prev) => {
+      if (!(normalizedKey in prev)) return prev
+      const next = { ...prev }
+      delete next[normalizedKey]
+      return next
+    })
+  }
+
+  const clearAllDraftImages = () => {
+    setDraftImagesMap({})
+  }
+
   const signInWithPassword = (email: string, password: string) =>
     db.auth.signInWithPassword({ email, password })
 
@@ -75,6 +105,17 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       setServerTextsMap(data ?? {})
     } catch (e) {
       console.error('Failed to load page texts', e)
+    }
+  }
+
+  const fetchImages = async () => {
+    try {
+      const res = await fetch('/api/images', { cache: 'no-store' })
+      if (!res.ok) return
+      const data = await res.json()
+      setServerImagesMap(data ?? {})
+    } catch (e) {
+      console.error('Failed to load page images', e)
     }
   }
 
@@ -110,6 +151,42 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   }
 
+  const saveDraftImages = async () => {
+    try {
+      const drafts = draftImagesMap ?? {}
+      const entries = Object.entries(drafts)
+      if (entries.length === 0) return { success: true as const, saved: 0 }
+
+      // Upload one-by-one so we can reuse the existing /api/images endpoint (multipart/form-data)
+      for (const [image_key, file] of entries) {
+        const form = new FormData()
+        form.set('image_key', image_key)
+        form.set('file', file)
+
+        const res = await fetch('/api/images', { method: 'POST', body: form })
+        const data = await res.json().catch(() => null)
+        if (!res.ok) {
+          const base = typeof data?.error === 'string' ? data.error : 'Failed to save image'
+          return { success: false as const, error: base }
+        }
+
+        // Optimistically update the images map with the returned URL
+        const normalizedKey = normalizeTextKey(image_key)
+        const newUrl = typeof data?.tableUrl === 'string' ? data.tableUrl : (typeof data?.url === 'string' ? data.url : undefined)
+        if (normalizedKey && newUrl) {
+          setServerImagesMap((prev) => ({ ...prev, [normalizedKey]: newUrl }))
+        }
+      }
+
+      clearAllDraftImages()
+      await fetchImages()
+      return { success: true as const, saved: entries.length }
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : String(e)
+      return { success: false as const, error: message }
+    }
+  }
+
   const refreshAdmin = async (hasSession: boolean) => {
     if (!hasSession) {
       setIsAdmin(false)
@@ -135,6 +212,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       setUser(data.session?.user ?? null)
       await refreshAdmin(!!data.session)
       await fetchTexts()
+      await fetchImages()
     })()
 
     const { data: sub } = db.auth.onAuthStateChange((_event, newSession) => {
@@ -143,6 +221,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       refreshAdmin(!!newSession)
       // refresh texts after login/logout
       fetchTexts()
+      fetchImages()
     })
 
     return () => {
@@ -161,12 +240,20 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setIsAdmin,
         serverTextsMap,
         textsMap,
+        serverImagesMap,
+        imagesMap,
         draftTextsMap,
+        draftImagesMap,
         setDraftText,
         clearDraftText,
         clearAllDraftTexts,
+        setDraftImage,
+        clearDraftImage,
+        clearAllDraftImages,
         saveDraftTexts,
+        saveDraftImages,
         refreshTexts: fetchTexts,
+        refreshImages: fetchImages,
         signInWithPassword,
         signOut,
       }}

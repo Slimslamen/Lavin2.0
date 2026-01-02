@@ -44,3 +44,45 @@ NEXT_PUBLIC_FORMSPREE_CODE=your_formspree_form_id
 ```
 
 If this variable is missing, the contact form will display a fallback message and submission will be disabled.
+
+## Supabase (Editable Texts + Images)
+
+This project uses Supabase for:
+
+- **Editable texts** stored in table `pageTexts` via `POST /api/texts`
+- **Editable images** stored in table `pageImages` + Supabase Storage via `POST /api/images`
+
+### Required env vars
+
+On the server (not exposed to the browser):
+
+```env
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+```
+
+Optional (defaults to `page-images`):
+
+```env
+NEXT_PUBLIC_SUPABASE_IMAGES_BUCKET=page-images
+```
+
+### Supabase Storage bucket
+
+Create a **public** bucket named `page-images` (or set `NEXT_PUBLIC_SUPABASE_IMAGES_BUCKET`).
+
+### Supabase table for images
+
+Create a table named `pageImages` with a unique key per image slot:
+
+```sql
+create table if not exists public."pageImages" (
+	image_key text primary key,
+	url text not null,
+	published boolean not null default true,
+	updated_at timestamptz not null default now()
+);
+```
+
+Example key used by the hero background:
+
+- `hero_background`

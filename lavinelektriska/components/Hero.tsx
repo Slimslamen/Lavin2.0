@@ -1,33 +1,34 @@
 "use client";
 
-import Image from "next/image";
 import { useSupabase } from "@/Context/supabaseContext";
 import EditableText from "./AdminEdit/EditableText";
+import EditableImage from "./AdminEdit/EditableImage";
+import Image from "next/image";
 // import { MoneySend, TruckFast } from "iconsax-astro";
 
 const Hero = () => {
-  const { textsMap } = useSupabase();
+  const { textsMap, imagesMap } = useSupabase();
+
+  const heroBg = imagesMap?.hero_background ?? "";
   return (
     <section id="home" className="relative min-h-screen overflow-hidden" aria-label="Startsida hero">
       {/* Responsive background image without LQIP */}
-      <div className="absolute inset-0 w-full h-full max-w-full" aria-hidden="true">
-        <picture>
-          {/* Mobile (portrait / tighter crop). You can swap to another asset if desired. */}
-          <source media="(max-width: 640px)" type="image/webp" srcSet="/Images/mobileHeader.webp" />
-          {/* Desktop / larger screens */}
-          <source media="(min-width: 641px)" type="image/webp" srcSet="/Images/HeroImg.webp" />
-          {/* Fallback img element */}
-          <Image
-            fill
-            preload={true}
-            src="/Images/plejdHero.webp"
-            alt="Bakgrundsbild elinstallation"
-            className="object-cover object-center"
-            style={{ position: "absolute", inset: 0, zIndex: 0 }}
-          />
-        </picture>
-        <div className="absolute inset-0 bg-linear-to-br from-black/70 via-black/50 to-black/30" aria-hidden="true" />
-        <div className="absolute inset-0 bg-linear-to-t from-[#66BEF0]/20 to-transparent" aria-hidden="true" />
+      <div
+        className="absolute inset-0 w-full h-full max-w-full bg-linear-to-br from-slate-900 via-slate-800 to-[#66BEF0]"
+        aria-hidden="true"
+      >
+        <EditableImage
+          imageKey="hero_background"
+          value={heroBg}
+          alt="auto"
+          fill
+          priority="eager"
+          sizes="45rem"
+          className="object-cover object-center"
+          editButtonClassName="w-40 absolute right-10"
+        />
+        <div className="absolute inset-0 bg-linear-to-br from-black/70 via-black/50 to-black/30 pointer-events-none z-0" aria-hidden="true" />
+        <div className="absolute inset-0 bg-linear-to-t from-[#66BEF0]/20 to-transparent pointer-events-none z-0" aria-hidden="true" />
       </div>
 
       {/* Content */}
@@ -47,16 +48,16 @@ const Hero = () => {
                 textKey="hero_title_line2"
                 value={textsMap?.hero_title_line2}
                 fallback="Din pålitliga elpartner"
-                textClassName="h-18 bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent"
+                textClassName="sm:h-18 bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent"
                 width="15rem"
               />
             </h1>
             <div className="space-y-6 mb-8 text-lg">
               <p className="text-gray-200 leading-relaxed">
-                <EditableText textKey="hero_p1" value={textsMap?.hero_p1} fallback="Text laddar..." width="35rem"/>
+                <EditableText textKey="hero_p1" value={textsMap?.hero_p1} fallback="Text laddar..." width="35rem" />
               </p>
               <p className="text-gray-300 leading-relaxed">
-                <EditableText textKey="hero_p2" value={textsMap?.hero_p2} fallback="Text laddar..." width="35rem"/>
+                <EditableText textKey="hero_p2" value={textsMap?.hero_p2} fallback="Text laddar..." width="35rem" />
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
@@ -80,10 +81,10 @@ const Hero = () => {
             <div className="smallerbox grid grid-cols-1 sm:grid-cols-3 gap-4 smallerBox" aria-label="Företagsfördelar">
               <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-lg">
                 <Image
+                  width={32}
+                  height={32}
                   src="/svg/checkCircle.svg"
                   alt="check circle icon"
-                  width={24}
-                  height={24}
                   loading="eager"
                   className="w-6 h-6"
                 />
@@ -97,10 +98,10 @@ const Hero = () => {
               </div>
               <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-lg">
                 <Image
+                  width={32}
+                  height={32}
                   src="/svg/checkCircle.svg"
                   alt="check circle icon"
-                  width={24}
-                  height={24}
                   loading="eager"
                   className="w-6 h-6"
                 />
@@ -114,10 +115,10 @@ const Hero = () => {
               </div>
               <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-lg">
                 <Image
+                  width={32}
+                  height={32}
                   src="/svg/checkCircle.svg"
                   alt="check circle icon"
-                  width={24}
-                  height={24}
                   loading="eager"
                   className="w-6 h-6"
                 />
@@ -148,10 +149,10 @@ const Hero = () => {
                   <div className="w-12 h-12 bg-[#66BEF0] rounded-lg flex items-center justify-center">
                     {/* <TruckFast size={27} color="#ffff" /> */}
                     <Image
-                      src="/svg/truck-speed-svgrepo-com.svg"
-                      alt="truck speed icon"
                       width={32}
                       height={32}
+                      src="/svg/truck-speed-svgrepo-com.svg"
+                      alt="truck speed icon"
                       className="w-10 h-10"
                       loading="eager"
                     />
@@ -176,10 +177,10 @@ const Hero = () => {
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-[#66BEF0] rounded-lg flex items-center justify-center">
                     <Image
-                      src="/svg/money-send-svgrepo-com.svg"
-                      alt="Money send icon"
                       width={32}
                       height={32}
+                      src="/svg/money-send-svgrepo-com.svg"
+                      alt="Money send icon"
                       className="w-10 h-10"
                       loading="eager"
                     />
@@ -204,10 +205,10 @@ const Hero = () => {
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-[#66BEF0] rounded-lg flex items-center justify-center">
                     <Image
-                      src="/svg/list-checks-svgrepo-com.svg"
-                      alt="list checks icon"
                       width={32}
                       height={32}
+                      src="/svg/list-checks-svgrepo-com.svg"
+                      alt="list checks icon"
                       className="w-10 h-10"
                       loading="eager"
                     />

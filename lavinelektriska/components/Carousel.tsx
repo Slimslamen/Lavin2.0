@@ -9,15 +9,15 @@ const Carousel = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const allImages = [
-    { id: 2, url: "/Images/Carousel/ArbeteKöksskåp.webp" },
+    { id: 2, url: "/Images/Carousel/ArbeteKok.webp" },
     { id: 1, url: "/Images/Carousel/ButiksBild.webp" },
     { id: 3, url: "/Images/Carousel/Rum.webp" },
-    { id: 4, url: "/Images/Carousel/Grönuttag.webp" },
-    { id: 6, url: "/Images/Carousel/Ställarbete.webp" },
+    { id: 4, url: "/Images/Carousel/Gronuttag.webp" },
+    { id: 6, url: "/Images/Carousel/Stallarbete.webp" },
     { id: 5, url: "/Images/Carousel/Golvrenovering.webp" },
-    { id: 8, url: "/Images/Carousel/Köksbild.webp" },
+    { id: 8, url: "/Images/Carousel/Koksbild.webp" },
     { id: 7, url: "/Images/Carousel/uteInstallation.webp" },
-    { id: 9, url: "/Images/Carousel/VägUttagNära.webp" },
+    { id: 9, url: "/Images/Carousel/Vagnarauttag.webp" },
     { id: 10, url: "/Images/Carousel/ElCentral.webp" },
     { id: 11, url: "/Images/Carousel/SpikaBetong.webp" },
     { id: 12, url: "/Images/Carousel/Badrum.webp" },

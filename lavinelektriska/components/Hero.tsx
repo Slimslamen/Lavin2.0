@@ -35,19 +35,19 @@ const Hero = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
           <div className="animate-fade-in text-white">
             <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight">
-              <EditableText
+              {/* <EditableText
                 textKey="hero_title_line1"
                 value={textsMap?.hero_title_line1}
                 fallback="Lavin Elektriska AB"
                 textClassName="bg-linear-to-r from-white to-blue-200 bg-clip-text text-transparent"
                 width="15rem"
-              />
+              /> */}
               <br />
               <EditableText
                 textKey="hero_title_line2"
                 value={textsMap?.hero_title_line2}
                 fallback="Din pålitliga elpartner"
-                textClassName="text-[#66BEF0] drop-shadow-lg text-[25px] opacity-70"
+                textClassName="h-18 bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent"
                 width="15rem"
               />
             </h1>

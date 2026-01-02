@@ -8,7 +8,7 @@ type EditableTextProps = {
   value?: string;
   fallback: string;
   textClassName?: string;
-  width?: string
+  width?: string;
 };
 
 function normalizeTextKey(input: string) {
@@ -40,7 +40,9 @@ export default function EditableText({ textKey, value, fallback, textClassName, 
   const hasChangedFromOriginal =
     typeof previewDraftValue === "string" && previewDraftValue !== originalValue;
 
-  if (!isAdmin || isMobile) return <>{value ?? fallback}</>;
+  if (!isAdmin || isMobile) {
+    return <span className={`inline-block ${textClassName ?? ""}`}>{value ?? fallback}</span>;
+  }
 
   return (
     <span className="relative inline-block">

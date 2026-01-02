@@ -11,7 +11,7 @@ const Carousel = () => {
   const allImages = [
     { id: 2, url: "/Images/Carousel/ArbeteKöksskåp.webp" },
     { id: 1, url: "/Images/Carousel/ButiksBild.webp" },
-    { id: 3, url: "/Images/Carousel/ElCentralArbete.webp" },
+    { id: 3, url: "/Images/Carousel/Rum.webp" },
     { id: 4, url: "/Images/Carousel/Grönuttag.webp" },
     { id: 6, url: "/Images/Carousel/Ställarbete.webp" },
     { id: 5, url: "/Images/Carousel/Golvrenovering.webp" },

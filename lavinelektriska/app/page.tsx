@@ -21,10 +21,10 @@ function App() {
         <Services />
       </Reveal>
       <Reveal>
-        <Testimonials />
+        <About />
       </Reveal>
       <Reveal>
-        <About />
+        <Testimonials />
       </Reveal>
       <Reveal>
         <FAQ />

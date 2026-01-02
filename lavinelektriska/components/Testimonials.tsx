@@ -40,17 +40,28 @@ const Testimonials = () => {
   ];
 
   return (
-    <section className="py-20 bg-linear-to-br from-gray-50 to-blue-50">
-      <div className="container mx-auto px-4">
+    <section className="relative py-20 overflow-hidden">
+      <video
+        className="absolute inset-0 w-full h-full object-cover z-0"
+        src="/Videos/Working.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        aria-hidden="true"
+      />
+
+      <div className="container mx-auto px-4 relative z-10">
+        
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold text-gray-50 drop-shadow mb-4">
             <EditableText
               textKey="testimonials_heading"
               value={textsMap?.testimonials_heading}
               fallback="Vad våra kunder säger"
             />
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-100/90 drop-shadow max-w-2xl mx-auto">
             <EditableText
               textKey="testimonials_subheading"
               value={textsMap?.testimonials_subheading}
